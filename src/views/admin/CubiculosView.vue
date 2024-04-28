@@ -4,11 +4,12 @@
       <div class="py-4">
         <button
           type="button"
-          class="btn btn-outline-success"
+          class="btn btn-outline-primary"
           data-bs-toggle="modal"
           data-bs-target="#crearCubiculoModal"
           data-bs-whatever="Crear cubículo"
         >
+          <i class="bi bi-plus-circle-dotted"></i>
           Crear Cubiculo
         </button>
       </div>
@@ -26,15 +27,23 @@
                 <div class="btn-group">
                   <button
                     type="button"
-                    class="btn btn-outline-success"
+                    class="btn btn-sm btn-outline-success"
                     data-bs-toggle="modal"
                     data-bs-target="#editarCubiculoModal"
                     data-bs-whatever="Editar cubículo"
                     @click="editarCubiculo(cubiculo)"
                   >
+                    <i class="bi bi-pencil-square"></i>
                     Editar
                   </button>
-                  <button type="button" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    @click="eliminarCubiculo(cubiculo)"
+                  >
+                    <i class="bi bi-trash-fill"></i>
+                    Eliminar
+                  </button>
                 </div>
               </div>
             </article>
@@ -63,7 +72,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="pt-3" v-if="cubiculoToEdit">
+            <div v-if="cubiculoToEdit">
               <label for="name">Nombre</label>
               <input
                 id="name"
@@ -111,7 +120,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <div class="pt-3">
+            <div>
               <label for="name">Nombre</label>
               <input class="form-control" v-model="name" placeholder="Nombre del cubículo" />
 
@@ -121,10 +130,20 @@
                 v-model="descripcion"
                 placeholder="Descripción del cubículo"
               />
-              <button class="btn btn-primary mt-2" data-bs-dismiss="modal" @click="agregarCubiculo">
+              <button
+                class="btn btn-primary mt-2"
+                data-bs-dismiss="modal"
+                @click="agregarCubiculo"
+                :disabled="!name || !descripcion"
+              >
                 Agregar cubículo
               </button>
-              <button type="button" class="btn btn-secondary ms-2 mt-2" data-bs-dismiss="modal">
+              <button
+                type="button"
+                class="btn btn-secondary ms-2 mt-2"
+                data-bs-dismiss="modal"
+                @click="clearInputs"
+              >
                 Cancelar
               </button>
             </div>
@@ -168,6 +187,9 @@ export default {
     })
 
     const agregarCubiculo = () => {
+      if (!state.name || !state.descripcion) {
+        return
+      }
       const newCubiculo = {
         id: state.cubiculos.length + 1,
         name: state.name,
@@ -193,6 +215,7 @@ export default {
         state.editDialogOpen = false
       }
     }
+
     const cancelEdit = () => {
       state.cubiculoToEdit = null
       state.editDialogOpen = false
@@ -202,13 +225,19 @@ export default {
       state.cubiculos = state.cubiculos.filter((c) => c.id !== cubiculo.id)
     }
 
+    const clearInputs = () => {
+      state.name = ''
+      state.descripcion = ''
+    }
+
     return {
       ...toRefs(state),
       agregarCubiculo,
       editarCubiculo,
       saveCubiculo,
       eliminarCubiculo,
-      cancelEdit
+      cancelEdit,
+      clearInputs
     }
   }
 }
