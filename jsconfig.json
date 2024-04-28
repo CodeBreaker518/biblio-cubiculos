@@ -3,10 +3,18 @@
     "target": "es2017",
     "module": "ESNext",
     "baseUrl": ".",
-    //
+    "moduleResolution": "node",
+
     "paths": {
-      "@/*": ["/src/*"]
-    }
-  },
-  "exclude": ["node_modules", "dist"]
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  }
 }

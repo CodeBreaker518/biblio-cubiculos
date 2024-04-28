@@ -2,74 +2,71 @@
   <div class="cuerpo">
     <div class="home">
       <div class="rectangulo-purpura">
-        <img src="@/assets/escalinatas.png" class="escalinatas" />
-      </div>
+        <img src="@/assets/escalinatas.png" class="escalinatas">
+      </div> 
       <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
         <div class="row gx-lg-5 align-items-center mb-5">
-          <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10"></div>
-          <div class="card bg-glass mx-auto my-5">
-            <div class="card-body">
-              <h2 class="fw-light mb-4">Registrarse</h2>
-              <img src="@/assets/logo.png" class="icon mb-4" />
-              <form @submit.prevent="submitForm">
-                <div class="mb-3">
-                  <label for="nombre" class="form-label">Nombre</label>
-                  <input type="text" id="nombre" class="form-control" v-model="nombre" required />
-                </div>
-                <div class="mb-3">
-                  <label for="apellido" class="form-label">Apellido</label>
-                  <input
-                    type="text"
-                    id="apellido"
-                    class="form-control"
-                    v-model="apellido"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="correo" class="form-label">Correo</label>
-                  <input type="email" id="correo" class="form-control" v-model="correo" required />
-                </div>
-                <div class="mb-3">
-                  <label for="contraseña" class="form-label">Contraseña</label>
-                  <input
-                    type="password"
-                    id="contraseña"
-                    class="form-control"
-                    v-model="contraseña"
-                    required
-                  />
-                </div>
-                <div class="mb-3">
-                  <button
-                    type="button"
-                    class="btn btn-outline-primary w-100"
-                    :class="{ 'btn-active': rolSeleccionado === 'estudiante' }"
-                    @click="seleccionarRol('estudiante')"
-                  >
-                    Estudiante
+          <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+          </div>
+          <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+            <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+            <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+            <div class="card bg-glass">
+              <div class="card-body px-4 py-5 px-md-5">
+
+                <form>
+                  
+                  <div class="row">
+                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                      <img src="@/assets/logo.png" class="icon"/>
+                    </h1>
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-outline">
+                        <input type="text" id="nombre" class="form-control"/>
+                        <label class="form-label" for="form3Example1">Nombre</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-outline">
+                        <input type="text" id="apellido" class="form-control"/>
+                        <label class="form-label" for="form3Example2">Apellido</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="email" id="correo" class="form-control"/>
+                    <label class="form-label" for="form3Example3">Correo</label>
+                  </div>
+                  
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="password" id="contraseña" class="form-control"/>
+                    <label class="form-label" for="form3Example4">Contraseña</label>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <button :class="{ 'btn-primary': rolSeleccionado === 'estudiante', 'btn-secondary': rolSeleccionado === 'administrador' }" type="button" class="btn" @click="seleccionarRol('estudiante')">Estudiante</button>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <button :class="{ 'btn-primary': rolSeleccionado === 'administrador', 'btn-secondary': rolSeleccionado === 'estudiante' }" type="button" class="btn" @click="seleccionarRol('administrador')">Administrador</button>
+                    </div>
+                  </div>
+                  
+                  <div v-if="rolSeleccionado === 'estudiante'" class="form-outline mb-4">
+                    <input type="text" id="nua" class="form-control"/>
+                    <label class="form-label" for="nua">NUA</label>
+                  </div>
+                  <div v-if="rolSeleccionado === 'administrador'" class="form-outline mb-4">
+                    <input type="text" id="nue" class="form-control"/>
+                    <label class="form-label" for="nue">NUE</label>
+                  </div>
+                  
+                  <button id="Registro" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">
+                    Registrarse
                   </button>
-                </div>
-                <div class="mb-3">
-                  <button
-                    type="button"
-                    class="btn btn-outline-primary w-100"
-                    :class="{ 'btn-active': rolSeleccionado === 'administrador' }"
-                    @click="seleccionarRol('administrador')"
-                  >
-                    Administrador
-                  </button>
-                </div>
-                <div v-if="rolSeleccionado === 'estudiante'" class="mb-3">
-                  <label for="nua" class="form-label">NUA</label>
-                  <input type="text" id="nua" class="form-control" v-model="nua" required />
-                </div>
-                <div v-if="rolSeleccionado === 'administrador'" class="mb-3">
-                  <label for="nue" class="form-label">NUE</label>
-                  <input type="text" id="nue" class="form-control" v-model="nue" required />
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -83,89 +80,66 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      nombre: '',
-      apellido: '',
-      correo: '',
-      contraseña: '',
-      rolSeleccionado: null,
-      nua: '',
-      nue: ''
-    }
+      rolSeleccionado: null
+    };
   },
   methods: {
     seleccionarRol(rol) {
-      this.rolSeleccionado = rol
-      if (rol === 'estudiante') {
-        this.nue = ''
-      } else if (rol === 'administrador') {
-        this.nua = ''
+      if (this.rolSeleccionado !== rol) {
+        this.rolSeleccionado = rol;
+      } else {
+        this.rolSeleccionado = null;
       }
-    },
-    submitForm() {
-      // prevent submit if there's an empty field, either nua or nue should be filled depending on the selected role
-      if (
-        !this.nombre ||
-        !this.apellido ||
-        !this.correo ||
-        !this.contraseña ||
-        !this.rolSeleccionado
-      ) {
-        alert('Por favor selecciona si eres estudiante o administrador')
-        return
-      }
-      if (this.rolSeleccionado === 'estudiante' && !this.nua) {
-        alert('NUA es requerido')
-        return
-      }
-      if (this.rolSeleccionado === 'administrador' && !this.nue) {
-        alert('NUE es requerido')
-        return
-      }
-
-      console.log({
-        nombre: this.nombre,
-        apellido: this.apellido,
-        correo: this.correo,
-        contraseña: this.contraseña,
-        rol: this.rolSeleccionado,
-        nua: this.nua,
-        nue: this.nue
-      })
     }
   }
 }
 </script>
 
+
 <style scoped>
-.btn-active {
-  background-color: rgb(88, 88, 250);
-  color: white;
-}
 
 .cuerpo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  right: -250px;
-  width: 100%;
-  height: 100vh;
-  background-color: #fdf7d2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: -125px;
+    width: 100%;
+    height: 100vh; 
+    background-color: #fdf7d2;
 }
 
 .bg-glass {
-  background-color: hsla(0, 0%, 100%, 0.9) !important;
-  backdrop-filter: saturate(200%) blur(25px);
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #c9a400;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
 }
 
 .icon {
-  position: relative;
-  width: 100%;
-  height: auto;
-  right: -20px;
-  max-width: 300px;
-  max-height: 300px;
+    position: relative;
+    width: 100%; 
+    height: auto; 
+    right: 0px;
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .rectangulo-purpura {
@@ -173,17 +147,30 @@ export default {
   top: 0;
   left: 0;
   width: 30%;
-  height: 100vh;
+  height: 100vh; 
   background-color: purple;
 }
 
-.card {
+.card.bg-glass {
+  position: relative;
   width: 100%;
-  max-width: 100vw;
+  max-width: 1000vw; 
   margin: auto;
   top: 25px;
+  left: 15vw;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
+
+.card-body {
+  position: relative;
+  width: 30vw;
+}
+
+#nombre, #apellido, #correo, #contraseña, #nua, #nue {
+  margin: 15px;
+  padding: 2px;
+}
+
 </style>

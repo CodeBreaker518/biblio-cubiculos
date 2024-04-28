@@ -4,14 +4,13 @@ import RegisterView from '../views/RegisterView.vue'
 import AdminView from '../views/admin/AdminView.vue'
 import CubiculosView from '../views/admin/CubiculosView.vue'
 import ReservasView from '../views/admin/ReservasView.vue'
+import VistaInicio from '../views/VistaInicio.vue'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
+const routes = [
+  {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'Inicio',
+      component: VistaInicio
     },
     {
       path: '/admin',
@@ -34,8 +33,17 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
-    }
-  ]
+    },
+    {
+    path: '/InterUsuario',
+    name: 'InterUsuario',
+    component: () => import('../views/InterUsuarioView.vue')
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
 })
 
 export default router
