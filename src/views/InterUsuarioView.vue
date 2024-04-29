@@ -7,7 +7,7 @@
         <ul v-show="showMenu" class="profile-menu active">
           <li>{{ username }}</li>
           <li><router-link to="/perfil">Perfil</router-link></li>
-          <li><router-link to="/ajustes">Ajustes</router-link></li>
+          <li><router-link to="/Ajustes">Ajustes</router-link></li>
           <li><button @click="logout">Cerrar sesión</button></li>
         </ul>
       </header>
