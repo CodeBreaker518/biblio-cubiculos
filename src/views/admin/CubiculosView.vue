@@ -99,7 +99,6 @@
       </div>
     </div>
 
-    <!-- MODAL PARA CREAR UN CUBICULO -->
     <div
       class="modal fade"
       id="crearCubiculoModal"
@@ -130,6 +129,10 @@
                 v-model="descripcion"
                 placeholder="Descripción del cubículo"
               />
+              <label for="horaInicio">Hora de Reserva</label>
+              <select class="form-select mt-2" id="horaInicio" v-model="reserva.horaInicio" required>
+                <option v-for="hora in horas" :key="hora" :value="hora">{{ hora }}</option>
+              </select>
               <button
                 class="btn btn-primary mt-2"
                 data-bs-dismiss="modal"
@@ -183,7 +186,14 @@ export default {
         }
       ],
       cubiculoToEdit: null,
-      editDialogOpen: false
+      editDialogOpen: false,
+      reserva: {
+        nombreEstudiante: '',
+        nuaEstudiante: '',
+        horaInicio: '',
+        horaFin: ''
+      },
+      horas: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00']
     })
 
     const agregarCubiculo = () => {
@@ -216,11 +226,6 @@ export default {
       }
     }
 
-    const cancelEdit = () => {
-      state.cubiculoToEdit = null
-      state.editDialogOpen = false
-    }
-
     const eliminarCubiculo = (cubiculo) => {
       state.cubiculos = state.cubiculos.filter((c) => c.id !== cubiculo.id)
     }
@@ -236,9 +241,77 @@ export default {
       editarCubiculo,
       saveCubiculo,
       eliminarCubiculo,
-      cancelEdit,
       clearInputs
     }
   }
 }
 </script>
+
+<style scoped>
+.container {
+  padding: 20px;
+  background: #002F6C; /* Azul oscuro de la Universidad de Guanajuato */
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  margin: 20px auto;
+  color: #FFFFFF; /* Texto blanco para contraste */
+}
+
+.btn-outline-primary {
+  color: #007BFF; /* Azul principal */
+  border-color: #007BFF; /* Azul principal */
+}
+
+.btn-outline-primary:hover {
+  color: #FFFFFF; /* Texto blanco */
+  background-color: #007BFF; /* Azul principal */
+  border-color: #007BFF; /* Azul principal */
+}
+
+.card {
+  background-color: #FFFFFF; /* Fondo blanco para las tarjetas */
+  border: 1px solid #CED4DA; /* Borde gris */
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #343A40; /* Texto oscuro */
+}
+
+.card-text {
+  color: #6C757D; /* Texto gris */
+}
+
+.btn-outline-success {
+  color: #28A745; /* Verde */
+  border-color: #28A745; /* Verde */
+}
+
+.btn-outline-success:hover {
+  color: #FFFFFF; /* Texto blanco */
+  background-color: #28A745; /* Verde */
+  border-color: #28A745; /* Verde */
+}
+
+.modal-content {
+  background-color: #FFFFFF; /* Fondo blanco */
+  border-radius: 8px;
+}
+
+.modal-title {
+  color: #343A40; /* Texto oscuro */
+}
+
+.btn-primary {
+  background-color: #007BFF; /* Azul principal */
+  border-color: #007BFF; /* Azul principal */
+}
+
+.btn-primary:hover {
+  background-color: #0056B3; /* Azul más oscuro */
+  border-color: #0056B3; /* Azul más oscuro */
+}
+</style>
