@@ -1,24 +1,11 @@
-<!-- <script>
-export default {
-  name: 'loginComponent',
-  components: {
-
-  },
-  data(){
-    return{
-      nua: "",
-      password: ""
-
-    }
-  }
-}
-</script> -->
-
 <template>
     <div class="container-card">
       <div class="container-form">
         <div class="container-logo">
-        <img src="./assets/logo.png" alt="Universidad de Guanajuato">
+          <img
+              src="@/assets/logo.png"
+              class="img-fluid mb-4"
+              alt="ug image" />
         </div>
         <form action="">
           <!-- Campos del Login -->
@@ -59,10 +46,6 @@ export default {
 </template>
 
 <style>
-@font-face{
-  font-family: "personal"; 
-  src: url(./Montserrat-VariableFont_wght.ttf);
-}
 html {
    box-sizing: border-box;
    font-size: 62.5%; /* 1rem = 10px */
@@ -90,7 +73,7 @@ html {
  }
 
  body{
-  background-image: url(./assets/fondofooter.jpg);
+  background-image: url("@/assets/fondofooter.jpg");
   background-repeat: no-repeat;
   background-size: cover;
  } 

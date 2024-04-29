@@ -29,10 +29,20 @@ const routes = [
     component: RegisterView,
   },
   {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/LoginView.vue"),
+  },
+  {
     path: "/InterUsuario",
     name: "InterUsuario",
     component: () => import("../views/InterUsuarioView.vue"),
   },
+  {
+    path: "/Ajustes",
+    name: "Ajustes",
+    component: () => import("../views/AjustesView.vue"),
+  },  
 ];
 
 const router = createRouter({
