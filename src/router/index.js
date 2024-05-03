@@ -43,6 +43,11 @@ const routes = [
     name: "Ajustes",
     component: () => import("../views/AjustesView.vue"),
   },  
+  {
+    path: "/Recuperacion",
+    name: "Recuperacion",
+    component: () => import("../views/RecuperacionPasswordView.vue")
+  },
 ];
 
 const router = createRouter({

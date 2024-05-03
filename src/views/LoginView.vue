@@ -37,7 +37,7 @@
               <a href="#" class="registrate"><span class="s-registro">¿Aún no estás en CubiBiblio?</span>      <span>Regístrate </span></a>
             </div>
             <div class="container-recupera">
-              <a href="#" class="registrate"><span class="s-recupera">¿Olvidaste tu contraseña?</span>     <span>Recupérala aquí</span></a>
+              <a href="/Recuperacion" class="registrate"><span class="s-recupera">¿Olvidaste tu contraseña?</span>     <span>Recupérala aquí</span></a>
             </div>
           </div>
         </form>
