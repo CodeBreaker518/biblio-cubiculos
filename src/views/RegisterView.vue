@@ -2,94 +2,42 @@
   <div class="container-fluid p-0 h-100">
     <div class="row g-0 h-100">
       <!-- Columna de la imagen de fondo -->
-      <div
-        class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center position-relative vh-100 bg-image">
-        <div
-          class="position-absolute top-50 start-50 translate-middle text-center text-dark w-75">
+      <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center position-relative vh-100 bg-image">
+        <div class="position-absolute top-50 start-50 translate-middle text-center text-dark w-75">
           <!-- Contenido adicional ?? -->
         </div>
       </div>
       <!-- Columna del formulario -->
-      <div
-        class="col-lg-6 d-flex align-items-center justify-content-center position-relative vh-100 bg-color">
-        <div
-          class="position-absolute top-50 start-50 translate-middle text-center text-dark w-75">
+      <div class="col-lg-6 d-flex align-items-center justify-content-center position-relative vh-100 bg-color">
+        <div class="position-absolute top-50 start-50 translate-middle text-center text-dark w-75">
           <div class="card-background p-4 p-sm-5 shadow">
-            <img
-              src="@/assets/logo.png"
-              class="img-fluid mb-4"
-              alt="ug image" />
+            <img src="@/assets/logo.png" class="img-fluid mb-4" alt="ug image" />
             <form @submit.prevent="submitForm">
               <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="nombre"
-                  placeholder="Nombre"
-                  v-model="nombre"
-                  required />
+                <input type="text" class="form-control" id="nombre" placeholder="Nombre" v-model="nombre" required />
               </div>
               <div class="mb-3">
-                <input
-                  type="text"
-                  autocomplete="lastname"
-                  class="form-control"
-                  id="apellido"
-                  placeholder="Apellido"
-                  v-model="apellido"
-                  required />
+                <input type="text" autocomplete="lastname" class="form-control" id="apellido" placeholder="Apellido" v-model="apellido" required />
               </div>
               <div class="mb-3">
-                <input
-                  type="email"
-                  autocomplete="email"
-                  class="form-control"
-                  id="correo"
-                  placeholder="Correo electrónico"
-                  v-model="correo"
-                  required />
+                <input type="email" autocomplete="email" class="form-control" id="correo" placeholder="Correo electrónico" v-model="correo" required />
               </div>
               <div class="mb-3">
-                <input
-                  type="password"
-                  autocomplete="current-password"
-                  class="form-control"
-                  id="contraseña"
-                  placeholder="Contraseña"
-                  v-model="contraseña"
-                  required />
+                <input type="password" autocomplete="current-password" class="form-control" id="contraseña" placeholder="Contraseña" v-model="contraseña" required />
               </div>
               <div class="mb-3">
-                <button
-                  type="button"
-                  class="btn me-2 mb-2"
-                  @click="seleccionarRol('estudiante')"
-                  :class="{ active: rolSeleccionado === 'estudiante' }">
+                <button type="button" class="btn me-2 mb-2" @click="seleccionarRol('estudiante')" :class="{ active: rolSeleccionado === 'estudiante' }">
                   Estudiante
                 </button>
-                <button
-                  type="button"
-                  class="btn mb-2"
-                  @click="seleccionarRol('administrador')"
-                  :class="{ active: rolSeleccionado === 'administrador' }">
+                <button type="button" class="btn mb-2" @click="seleccionarRol('administrador')" :class="{ active: rolSeleccionado === 'administrador' }">
                   Administrador
                 </button>
               </div>
               <div v-if="rolSeleccionado === 'estudiante'" class="mb-3">
-                <input
-                  type="text"
-                  id="nua"
-                  placeholder="NUA"
-                  class="form-control"
-                  v-model="nua" />
+                <input type="text" id="nua" placeholder="NUA" class="form-control" v-model="nua" />
               </div>
               <div v-if="rolSeleccionado === 'administrador'" class="mb-3">
-                <input
-                  type="text"
-                  id="nue"
-                  placeholder="NUE"
-                  class="form-control"
-                  v-model="nue" />
+                <input type="text" id="nue" placeholder="NUE" class="form-control" v-model="nue" />
               </div>
               <div class="mb-3">
                 <button type="submit" class="btn btn-primary w-100">
@@ -136,7 +84,7 @@ export default {
         !this.contraseña ||
         !this.rolSeleccionado
       ) {
-        alert("Por favor selecciona si eres estudiante o administrador");
+        alert("Por favor completa todos los campos y selecciona si eres estudiante o administrador");
         return;
       }
       if (this.rolSeleccionado === "estudiante" && !this.nua) {
@@ -147,6 +95,12 @@ export default {
         alert("NUE es requerido");
         return;
       }
+
+      // Envía el correo de verificación
+      this.enviarCorreoVerificacion();
+
+      // Muestra la alerta
+      alert("Se ha enviado un correo de verificación a " + this.correo);
 
       // submit the form and clear the fields
       console.log({
@@ -166,6 +120,10 @@ export default {
       this.rolSeleccionado = null;
       this.nua = "";
       this.nue = "";
+    },
+    enviarCorreoVerificacion() {
+      
+      console.log("Correo de verificación enviado a: " + this.correo);
     },
   },
 };
