@@ -3,7 +3,7 @@ import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import AdminView from "../views/admin/AdminView.vue";
 import CubiculosView from "../views/admin/CubiculosView.vue";
-// import VistaInicio from '../views/HomeView.vue'
+import AchievementsView from "../views/admin/AchievementsView.vue";
 
 const routes = [
   {
@@ -14,14 +14,24 @@ const routes = [
   {
     path: "/admin",
     name: "Dashboard",
+    component: AdminView,
     children: [
+      {
+        path: "",
+        name: "admin",
+        component: CubiculosView,
+      },
       {
         path: "cubiculos",
         name: "Cubiculos",
         component: CubiculosView,
       },
+      {
+        path: "achievements",
+        name: "Logros",
+        component: AchievementsView,
+      },
     ],
-    component: AdminView,
   },
   {
     path: "/Register",
@@ -42,7 +52,7 @@ const routes = [
     path: "/Ajustes",
     name: "Ajustes",
     component: () => import("../views/AjustesView.vue"),
-  },  
+  },
 ];
 
 const router = createRouter({
