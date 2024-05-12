@@ -6,7 +6,7 @@
         </div>
         <ul v-show="showMenu" class="profile-menu active">
           <li>{{ username }}</li>
-          <li><router-link to="/perfil">Perfil</router-link></li>
+          <li><router-link to="/Historial">Panel de avisos</router-link></li>
           <li><router-link to="/Ajustes">Ajustes</router-link></li>
           <li><button @click="logout">Cerrar sesión</button></li>
         </ul>
@@ -67,7 +67,7 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
-    padding: 15px 0;
+    padding: 25px 0;
   }
   
   nav ul {

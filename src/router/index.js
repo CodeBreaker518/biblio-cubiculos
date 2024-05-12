@@ -50,7 +50,12 @@ const routes = [
   },
   { path: "/Reservar", 
     name: "Reservar", 
-    component: () => import("../views/ReservarCubiculosView.vue"), 
+    component: () => import("../views/ReservarCubiculosView.vue")
+  },
+  {
+    path: "/Historial",
+    name: "Historial",
+    component: () => import("../views/PerfilView.vue")
   },
 ];
 

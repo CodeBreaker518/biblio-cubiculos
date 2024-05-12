@@ -34,7 +34,7 @@
             <p><span>Aviso de recopilación de información.</span></p>
 
             <div class="container-registro">
-              <a href="#" class="registrate"><span class="s-registro">¿Aún no estás en CubiBiblio?</span>      <span>Regístrate </span></a>
+              <a href="/Register" class="registrate"><span class="s-registro">¿Aún no estás en CubiBiblio?</span>      <span>Regístrate </span></a>
             </div>
             <div class="container-recupera">
               <a href="/Recuperacion" class="registrate"><span class="s-recupera">¿Olvidaste tu contraseña?</span>     <span>Recupérala aquí</span></a>
