@@ -1,12 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 
-// put bootstrap icons in the links
-
 const links = [
   { to: '/admin', text: 'Inicio', icon: 'bi bi-house' },
   { to: '/admin/cubiculos', text: 'Cubiculos', icon: 'bi bi-box' },
-  // { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' }
+  { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' }
   // { to: '/admin/usuarios', text: 'Usuarios', icon: 'bi bi-person' },
 ]
 </script>
