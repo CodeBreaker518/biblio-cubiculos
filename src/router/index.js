@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import AdminView from "../views/admin/AdminView.vue";
-import CubiculosView from "../views/admin/CubiculosView.vue";
-// import VistaInicio from '../views/HomeView.vue'
+import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
+import AdminReservasView from "../views/admin/AdminReservasView.vue";
 
 const routes = [
   {
@@ -18,7 +18,12 @@ const routes = [
       {
         path: "cubiculos",
         name: "Cubiculos",
-        component: CubiculosView,
+        component: AdminCubiculosView,
+      },
+      {
+        path: "reservas",
+        name: "Reservas",
+        component: AdminReservasView,
       },
     ],
     component: AdminView,
@@ -42,15 +47,16 @@ const routes = [
     path: "/Ajustes",
     name: "Ajustes",
     component: () => import("../views/AjustesView.vue"),
-  },  
+  },
   {
     path: "/Recuperacion",
     name: "Recuperacion",
-    component: () => import("../views/RecuperacionPasswordView.vue")
+    component: () => import("../views/RecuperacionPasswordView.vue"),
   },
-  { path: "/Reservar", 
-    name: "Reservar", 
-    component: () => import("../views/ReservarCubiculosView.vue"), 
+  {
+    path: "/Reservar",
+    name: "Reservar",
+    component: () => import("../views/ReservarCubiculosView.vue"),
   },
 ];
 
