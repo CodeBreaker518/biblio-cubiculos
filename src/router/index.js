@@ -53,10 +53,14 @@ const routes = [
     name: "Recuperacion",
     component: () => import("../views/RecuperacionPasswordView.vue"),
   },
+  { path: "/Reservar", 
+    name: "Reservar", 
+    component: () => import("../views/ReservarCubiculosView.vue")
+  },
   {
-    path: "/Reservar",
-    name: "Reservar",
-    component: () => import("../views/ReservarCubiculosView.vue"),
+    path: "/Historial",
+    name: "Historial",
+    component: () => import("../views/PerfilView.vue")
   },
 ];
 
