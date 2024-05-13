@@ -1,10 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import LoginView from "../views/LoginView.vue";
+import InterUsuarioView from "../views/InterUsuarioView.vue";
+import AjustesView from "../views/AjustesView.vue";
+import RecuperacionPasswordView from "../views/RecuperacionPasswordView.vue";
+import PerfilView from "../views/PerfilView.vue";
+import ReservarCubiculosView from "../views/ReservarCubiculosView.vue";
+
 import AdminView from "../views/admin/AdminView.vue";
 import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
+import AchievementsView from "../views/admin/AchievementsView.vue";
 
 const routes = [
   {
@@ -15,7 +23,13 @@ const routes = [
   {
     path: "/admin",
     name: "Dashboard",
+    component: AdminView,
     children: [
+      {
+        path: "",
+        name: "admin",
+        component: AdminCubiculosView,
+      },
       {
         path: "cubiculos",
         name: "Cubiculos",
@@ -31,42 +45,47 @@ const routes = [
         name: "Avisos",
         component: AdminAvisosView,
       },
+      {
+        path: "achievements",
+        name: "Logros",
+        component: AchievementsView,
+      },
     ],
-    component: AdminView,
   },
   {
-    path: "/Register",
-    name: "register",
+    path: "/register",
+    name: "Register",
     component: RegisterView,
   },
   {
     path: "/login",
-    name: "login",
-    component: () => import("../views/LoginView.vue"),
+    name: "Login",
+    component: LoginView,
   },
   {
     path: "/InterUsuario",
     name: "InterUsuario",
-    component: () => import("../views/InterUsuarioView.vue"),
+    component: InterUsuarioView,
   },
   {
     path: "/Ajustes",
     name: "Ajustes",
-    component: () => import("../views/AjustesView.vue"),
+    component: AjustesView,
   },
   {
     path: "/Recuperacion",
     name: "Recuperacion",
-    component: () => import("../views/RecuperacionPasswordView.vue"),
+    component: RecuperacionPasswordView,
   },
-  { path: "/Reservar", 
-    name: "Reservar", 
-    component: () => import("../views/ReservarCubiculosView.vue")
+  {
+    path: "/Reservar",
+    name: "Reservar",
+    component: ReservarCubiculosView,
   },
   {
     path: "/Historial",
     name: "Historial",
-    component: () => import("../views/PerfilView.vue")
+    component: PerfilView,
   },
 ];
 
