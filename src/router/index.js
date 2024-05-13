@@ -7,12 +7,12 @@ import AjustesView from "../views/AjustesView.vue";
 import RecuperacionPasswordView from "../views/RecuperacionPasswordView.vue";
 import PerfilView from "../views/PerfilView.vue";
 import ReservarCubiculosView from "../views/ReservarCubiculosView.vue";
-
 import AdminView from "../views/admin/AdminView.vue";
 import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
+import ChangePasswordView from "../views/ChangePasswordView.vue";  // Importa la nueva vista
 
 const routes = [
   {
@@ -86,6 +86,11 @@ const routes = [
     path: "/Historial",
     name: "Historial",
     component: PerfilView,
+  },
+  {
+    path: "/change-password",
+    name: "ChangePassword",
+    component: ChangePasswordView  // Agrega la nueva ruta para cambiar la contraseña
   },
 ];
 
