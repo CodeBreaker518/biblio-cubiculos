@@ -13,17 +13,17 @@
             <!-- Correo electrónico -->
             <div class="campo">
               <label for="correo">Correo </label>
-              <input type="email" placeholder="Correo Electrónico" class="formu">
+              <input type="email"  v-model="email" placeholder="Correo Electrónico" class="formu">
             </div>
             <!-- Contraseña -->
             <div class="campo">
               <label for="contraseña">Contraseña</label>
-              <input type="password" class="formu">
+              <input type="password" v-model="pass" class="formu">
             </div>
           </div>
           <!-- Botones del login -->
-          <div class="container-btn">
-            <input type="submit" value="Acceder" class="btn-aceptar">
+          <div class="container-btn" @click="LogIn">
+            <input  value="Acceder" class="btn-aceptar">
           </div>
           <!-- Opciones y términos del login -->
           <div class="opciones">
@@ -45,6 +45,65 @@
     </div>
 </template>
 
+
+<script setup>
+   import { getAuth,signInWithEmailAndPassword,sendEmailVerification } from 'firebase/auth';
+
+   import { useRouter } from "vue-router";
+   import {ref} from "vue";
+
+const email = ref ("");
+const pass = ref ("");
+
+ const router = useRouter();
+
+const LogIn = () => 
+{
+  const auth = getAuth ();
+
+
+  if (!((email.value== "") && (pass.value == ""))) {
+    
+    signInWithEmailAndPassword(auth,email.value,pass.value)
+      .then ((data)=>
+      {
+        console.log(data.user);
+        console.log (" Sesion Iniciada ");
+        console.log (auth.currentUser);
+         if (auth.currentUser.emailVerified)
+         {
+            router.push('/InterUsuario');
+         }else 
+         {
+            alert("El email no ha sido verificado, reenviamos un correo de verificacion a su direccion de correo");
+             sendEmailVerification(auth.currentUser)
+            .then(()=> {
+                
+                    console.log ("enviao");
+                     router.push("/")
+                })
+
+         }
+
+        
+       
+      })
+      .catch((error)=>
+      {
+        console.log(error);
+        alert(error.message);
+      });
+  }
+   else 
+   {
+    alert("Complete los campos para continuar : )")
+   }
+  
+}
+
+
+
+</script>
 <style>
 html {
    box-sizing: border-box;
