@@ -4,6 +4,7 @@ import RegisterView from "../views/RegisterView.vue";
 import AdminView from "../views/admin/AdminView.vue";
 import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
+import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
         path: "reservas",
         name: "Reservas",
         component: AdminReservasView,
+      },
+      {
+        path: "avisos",
+        name: "Avisos",
+        component: AdminAvisosView,
       },
     ],
     component: AdminView,

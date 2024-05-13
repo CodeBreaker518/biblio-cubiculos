@@ -96,12 +96,6 @@ export default {
         return;
       }
 
-      // Envía el correo de verificación
-      this.enviarCorreoVerificacion();
-
-      // Muestra la alerta
-      alert("Se ha enviado un correo de verificación a " + this.correo);
-
       // submit the form and clear the fields
       console.log({
         nombre: this.nombre,
@@ -120,10 +114,6 @@ export default {
       this.rolSeleccionado = null;
       this.nua = "";
       this.nue = "";
-    },
-    enviarCorreoVerificacion() {
-      
-      console.log("Correo de verificación enviado a: " + this.correo);
     },
   },
 };
