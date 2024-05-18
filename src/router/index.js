@@ -13,6 +13,7 @@ import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
 import ChangePasswordView from "../views/ChangePasswordView.vue";  // Importa la nueva vista
+import ReservarCubiculosUserView from "../views/ReservarCubiculosUserView.vue";
 
 const routes = [
   {
@@ -91,6 +92,11 @@ const routes = [
     path: "/change-password",
     name: "ChangePassword",
     component: ChangePasswordView  // Agrega la nueva ruta para cambiar la contraseña
+  },
+  {
+    path: "/ReservarUser",
+    name: "ReservarUser",
+    component: ReservarCubiculosUserView
   },
 ];
 

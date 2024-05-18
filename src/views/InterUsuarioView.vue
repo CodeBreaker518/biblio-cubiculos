@@ -1,8 +1,13 @@
 <template>
   <div class="user-dashboard">
     <header class="header">
-      <div class="profile" @click="toggleMenu">
-        <img src="@/assets/escalinatas.png" alt="Imagen de perfil" class="profile-image">
+      <div class="header-content">
+        <div class="user-welcome">
+          <h1>Bienvenido, {{ username }}</h1>
+        </div>
+        <div class="profile" @click="toggleMenu">
+          <img src="@/assets/escalinatas.png" alt="Imagen de perfil" class="profile-image">
+        </div>
       </div>
       <ul v-show="showMenu" class="profile-menu active">
         <li>{{ username }}</li>
@@ -13,139 +18,62 @@
     </header>
 
     <main>
-      <div class="user-welcome">
-        <h1>Bienvenido, {{ username }}</h1>
-      </div>
-    </main>
-
-    <div class="Cuerpo">
-      <div class="fibonacci-container">
-        <div class="fibonacci-item fibonacci1">
-          <p>CUBICULOS</p>
-          
-          <!-- Sección de tarjetas añadida -->
-          <div class="container py-2">
-            <div class="row">
-              <div class="col-md-10 col-lg-4" v-for="cubiculo in paginatedCubiculos" :key="cubiculo.id">
-                <div class="card mb-4">
-                  <div class="card-body">
-                    <h5 class="card-title">{{ cubiculo.name }}</h5>
-                    <p class="card-text">{{ cubiculo.descripcion }}</p>
-                    <p v-if="cubiculo.usuario">Usuario: {{ cubiculo.usuario.name }}</p>
-                    <p v-else>Usuario: Ninguno</p>
-
-                    <p v-if="cubiculo.usuario">
-                      Fecha de inicio: {{ cubiculo.start_date }}
-                    </p>
-                    <p v-if="cubiculo.usuario">Fecha de fin: {{ cubiculo.end_date }}</p>
-
-                    <p :class="cubiculo.usuario ? 'text-danger' : 'text-success'">
-                      {{ cubiculo.usuario ? "Ocupado" : "Disponible" }}
-                    </p>
-                    
-                    <!-- Modal para la reserva -->
-                    <div
-                      class="modal fade"
-                      id="createReservationModal"
-                      tabindex="-1"
-                      aria-labelledby="createReservationModal"
-                      aria-hidden="true"
-                      modal-dialog>
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="createReservationModal">
-                              Reservar cubículo
-                            </h5>
-                            <button
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div>
-                              <label for="usuario">Usuario</label>
-                              <select class="form-select" v-model="usuario">
-                                <option
-                                  v-for="user in usuarios"
-                                  :key="user.id"
-                                  :value="user.id">
-                                  {{ user.name }}
-                                </option>
-                              </select>
-
-                              <label for="fecha">Fecha</label>
-                              <input type="date" class="form-control" v-model="fecha" />
-
-                              <div class="row">
-                                <div class="col">
-                                  <label for="horaInicio">Hora de inicio</label>
-                                  <input
-                                    type="time"
-                                    class="form-control"
-                                    v-model="horaInicio" />
-                                </div>
-                                <div class="col">
-                                  <label for="horaFin">Hora de finalización</label>
-                                  <input
-                                    type="time"
-                                    class="form-control"
-                                    v-model="horaFin" />
-                                </div>
-                              </div>
-
-                              <button
-                                class="btn btn-primary mt-2"
-                                data-bs-dismiss="modal"
-                                @click="reservarCubiculo(cubiculo)">
-                                Reservar cubículo
-                              </button>
-                              <button
-                                type="button"
-                                class="btn btn-secondary ms-2 mt-2"
-                                data-bs-dismiss="modal">
-                                Cancelar
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+      <!-- Contenido del cuerpo -->
+      <div class="Cuerpo">
+        <div class="fibonacci-container">
+          <div class="fibonacci-item fibonacci1">
+            <p>CUBICULOS</p>
+            <!-- Sección de tarjetas añadida -->
+            <div class="container py-2">
+              <div class="row">
+                <div class="col-md-10 col-lg-4" v-for="cubiculo in paginatedCubiculos" :key="cubiculo.id">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ cubiculo.name }}</h5>
+                      <p class="card-text">{{ cubiculo.descripcion }}</p>
+                      <p v-if="cubiculo.usuario">Usuario: {{ cubiculo.usuario.name }}</p>
+                      <p v-else>Usuario: Ninguno</p>
+                      <p v-if="cubiculo.usuario">
+                        Fecha de inicio: {{ cubiculo.start_date }}
+                      </p>
+                      <p v-if="cubiculo.usuario">Fecha de fin: {{ cubiculo.end_date }}</p>
+                      <p :class="cubiculo.usuario ? 'text-danger' : 'text-success'">
+                        {{ cubiculo.usuario ? "Ocupado" : "Disponible" }}
+                      </p>
                     </div>
-
-                    
                   </div>
                 </div>
               </div>
+              <div class="navigation-buttons">
+                <button @click="previousPage" :disabled="currentPage === 1">Atrás</button>
+                <button @click="nextPage" :disabled="currentPage === totalPages">Adelante</button>
+              </div>
             </div>
-            
-            <div class="navigation-buttons">
-              <button @click="previousPage" :disabled="currentPage === 1">Atrás</button>
-              <button @click="nextPage" :disabled="currentPage === totalPages">Adelante</button>
+          </div>
+          <div class="fibonacci-item fibonacci3">
+            <p>MI CUBÍCULO</p>
+            <div v-if="!miCubiculo">
+              <p>No tienes cubículo, puedes solicitar uno</p>
+              <router-link to="/ReservarUser">
+                <button>Solicitar cubículo</button>
+              </router-link>
             </div>
           </div>
-        </div>
-        <div class="fibonacci-item fibonacci3">
-          <p>MI CUBÍCULO</p>
-          <div v-if="!miCubiculo">
-            <p>No tienes cubículo, puedes solicitar uno</p>
-            <button @click="solicitarCubiculo">Solicitar cubículo</button>
+          <div class="fibonacci-item fibonacci2">
+            <p>SANCIONES</p>
+            <div v-if="!sanciones.length">
+              <p>No tienes sanciones</p>
+            </div>
           </div>
-        </div>
-        <div class="fibonacci-item fibonacci2">
-          <p>SANCIONES</p>
-          <div v-if="!sanciones.length">
-            <p>No tienes sanciones</p>
-          </div>
-        </div>
-        <div class="fibonacci-item fibonacci4">
-          <p>LOGROS</p>
-          <div v-if="!logros.length">
-            <p>No tienes logros</p>
+          <div class="fibonacci-item fibonacci4">
+            <p>LOGROS</p>
+            <div v-if="!logros.length">
+              <p>No tienes logros</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <footer>
       <p>&copy; 2024 Cubículos Biblioteca</p>
@@ -162,8 +90,8 @@ export default {
       username: 'Usuario',
       showMenu: false,
       miCubiculo: null,
-      sanciones: [], // Array para sanciones
-      logros: [] // Array para logros
+      sanciones: [],
+      logros: []
     };
   },
   setup() {
@@ -201,12 +129,6 @@ export default {
       return state.cubiculos.slice(start, end);
     });
 
-    function abrirModalReserva(cubiculo) {
-      state.cubiculoActual = cubiculo;
-    }
-
-    
-
     function nextPage() {
       if (state.currentPage < totalPages.value) {
         state.currentPage++;
@@ -219,18 +141,12 @@ export default {
       }
     }
 
-    function solicitarCubiculo() {
-      console.log("Solicitud de cubículo enviada");
-    }
-
     return {
       ...toRefs(state),
-      abrirModalReserva,
       nextPage,
       previousPage,
       paginatedCubiculos,
-      totalPages,
-      solicitarCubiculo
+      totalPages
     };
   },
   methods: {
@@ -253,40 +169,49 @@ export default {
   padding: 25px 0;
 }
 
-nav ul {
+.header-content {
   display: flex;
-  list-style: none;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.user-welcome {
+  flex-grow: 1;
+  max-width: 800px; 
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .profile {
   cursor: pointer;
+  position: relative;
+  z-index: 1000; 
 }
 
 .profile-menu {
   position: absolute;
-  top: calc(100% + 100px);
+  top: calc(100% + 10px);
   right: 0;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 20px;
-  display: none;
   list-style: none;
+  z-index: 1001; 
+  display: none;
 }
 
 .profile-menu li {
   margin-bottom: 10px;
 }
 
-.profile:hover .profile-menu,
 .profile-menu.active {
   display: block;
 }
 
 .profile-image {
-  position: absolute;
-  top: 10px;
-  right: 28px;
   width: 80px;
   height: 80px;
   border-radius: 50%;

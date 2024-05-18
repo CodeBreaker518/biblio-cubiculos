@@ -2,7 +2,7 @@
   <div class="recovery-page">
     
     <header>
-      <img src="@/assets/logo.png" alt="Logo de la empresa">
+      <img src="@/assets/logo.png" alt="Logo">
       <h1 style="color: #cca300;">Recuperar Contraseña</h1>
       <router-link to="/login" style="color: #705f7b;">Volver al inicio de sesión</router-link>
     </header>
