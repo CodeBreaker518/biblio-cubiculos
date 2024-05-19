@@ -7,7 +7,7 @@
           <!-- Contenido adicional ?? -->
         </div>
       </div>
-      <!-- Columna del formulario -->
+      <!-- Columna del formulario de registro -->
       <div class="col-lg-6 d-flex align-items-center justify-content-center position-relative vh-100 bg-color">
         <div class="position-absolute top-50 start-50 translate-middle text-center text-dark w-75">
           <div class="card-background p-4 p-sm-5 shadow">
@@ -40,7 +40,7 @@
                 <input type="text" id="nue" placeholder="NUE" class="form-control" v-model="usu_id" />
               </div>
               <div class="mb-3">
-                <button type="submit" class="btn btn-primary w-100">
+                <button id="Registro" type="submit" class="btn btn-primary w-100">
                   Registrarse
                 </button>
               </div>
@@ -53,237 +53,68 @@
 </template>
 
 <script setup>
- //import auth from "../firebaseConfig";
- import {getAuth,createUserWithEmailAndPassword,sendEmailVerification } from "firebase/auth";
- import {collection,addDoc} from "firebase/firestore"
- import {db} from "../firebaseConfig"
-  import {ref} from "vue"; 
-  
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+
 const router = useRouter();
-
-const rolSeleccionado = "estudiante";
-
-const usu_nombre = ref ("");
-const usu_apellido = ref ("");
-const usu_correo = ref ("");
-const usu_contraseña = ref ("");
-const usu_id = ref ("");
-const usu_rol= "estudiante";
-
 const auth = getAuth();
 
+const rolSeleccionado = ref("estudiante");
+const usu_nombre = ref("");
+const usu_apellido = ref("");
+const usu_correo = ref("");
+const usu_contraseña = ref("");
+const usu_id = ref("");
+const usu_rol = ref("estudiante");
 
-const crearUser = () => {
+const crearUser = async () => {
+  if (
+    usu_nombre.value &&
+    usu_apellido.value &&
+    usu_correo.value &&
+    usu_contraseña.value &&
+    usu_id.value &&
+    usu_rol.value
+  ) {
+    if (usu_correo.value.includes("@")) {
+      try {
+        await createUserWithEmailAndPassword(auth, usu_correo.value, usu_contraseña.value);
+        console.log("Usuario Creado");
+        await addDoc(collection(db, 'users'), {
+          u_id: usu_id.value,
+          u_nombre: usu_nombre.value,
+          u_apellido: usu_apellido.value,
+          u_correo: usu_correo.value,
+          u_rol: usu_rol.value
+        });
+        console.log("Usuario guardado");
+        await sendEmailVerification(auth.currentUser);
+        alert("Se ha enviado un correo de verificación. Verifique su correo para iniciar sesión");
+        console.log("Correo de verificación enviado");
+        router.push("/");
+      } catch (error) {
+        console.log(error);
+        alert(error.message);
+      }
+    } else {
+      alert("La dirección de correo no pertenece a la organización");
+    }
+  } else {
+    alert("Complete todos los campos para continuar");
+  }
+};
 
-  if (! (usu_nombre.value == "" && usu_apellido.value == "" && usu_correo.value == "" && usu_contraseña.value == "" && usu_id.value == "" && usu_rol.value== ""))
-{
-
-  if (usu_correo.value.includes("@") )
-  {
-
-    createUserWithEmailAndPassword(auth,usu_correo.value,usu_contraseña.value)
-          .then(() =>{
-        //  console.log(userCredential);
-        //  const user= userCredential;
-            console.log("Usuario Creado");
-
-           // Guardado de los datos en firebase 
-            
-              addDoc(collection(db,'users'),
-               {
-                  u_id : usu_id.value,
-                  u_nombre : usu_nombre.value,
-                  u_apellido : usu_apellido.value,
-                  u_correo :usu_correo.value,
-                  u_rol : usu_rol
-               }).then(()=>
-               {
-                  console.log("Usuario guardado");
-                  sendEmailVerification(auth.currentUser)
-                  .then(()=> {
-                    alert ("Se ha enviado un correo de verficiacion. Verifique su correo para iniciar sesion");
-                    console.log ("enviao");
-                    router.push("/")
-                  })
-
-               })
-            
-            
-            
-              // const newUser ={
-              //     u_id : usu_id.value,
-              //     u_nombre : usu_nombre.value,
-              //     u_apellido : usu_apellido.value,
-              //     u_correo :usu_correo.value,
-              //     u_rol : usu_rol.value
-              //   }
-
-          })
-          .catch( (error) => {
-            //const errorCode = error.code;
-            //const errorMessage = error.message;
-            console.log(error);
-              console.log("Usuario Creado'nt");
-          });
-
-
-
-  }else {alert ("La direccion de correo no pertenece a la organizacion")}
-
-}else{
-  alert ("Complete todos los campos para continuar")
-}
-
-
-}
-
-//Validacion de datos 
-
-  
-  // const newUser ={
-  //   u_id : "",
-  //   u_nombre : "",
-  //   u_apellido : "",
-  //   u_correo :"",
-  //   u_rol : ""
-  // }
-
-  // createUserWithEmailAndPassword(auth,"gutierrezcardenasjesus@gmail.com","1234567")
-  //       .then(() =>{
-  //     //    console.log(userCredential);
-  //     //  const user= userCredential;
-  //         console.log("Usuario Creado");
-  //       })
-  //       .catch( (error) => {
-  //         //const errorCode = error.code;
-  //         //const errorMessage = error.message;
-  //         console.log(error);
-  //           console.log("Usuario Creado'nt");
-  //       });
- 
-      // const rolest = () =>{
-      //    rolSeleccionado = "estudiante";
-      //    console.log(rolSeleccionado);
-      // }
-      // const roladmin = () =>{
-      //    rolSeleccionado = "administrador";
-      //    console.log(rolSeleccionado);
-      // }
-
-
- //export default {}
-
-
-//   data() {
-//     return {
-//       nombre: "",
-//       apellido: "",
-//       correo: "",
-//       contraseña: "",
-//       rolSeleccionado: null,
-//       nua: "",
-//       nue: "",
-//     };
-//   },
-//   methods: {
-//     seleccionarRol(rol) {
-//       this.rolSeleccionado = rol;
-//       if (rol === "estudiante") {
-//         this.nue = "";
-//       } else if (rol === "administrador") {
-//         this.nua = "";
-//       }
-//     },
-//     submitForm() {
-//       // prevent submit if there's an empty field, either nua or nue should be filled depending on the selected role
-//       if (
-//         !this.nombre ||
-//         !this.apellido ||
-//         !this.correo ||
-//         !this.contraseña ||
-//         !this.rolSeleccionado
-//       ) {
-//         alert("Por favor completa todos los campos y selecciona si eres estudiante o administrador");
-//         return;
-//       } else 
-//       {
-//         newUser.usu_nombre = this.nombre;
-//         newUser.usu_apellido = this.apellido;
-//         if (this.correo.includes("@") )
-//         {
-//           newUser.usu_correo = this.correo;
-//         }
-//         else
-//         {
-//           alert("El correo electronico no peretenece a la organizacion");
-//         }
-        
-//       }
-//       if (this.rolSeleccionado === "estudiante" && !this.nua) {
-//         alert("NUA es requerido");
-//         newUser.usu_rol = this.rolSeleccionado;
-//         newUser.usu_id = this.nua;
-        
-//         return;
-//       }
-//       if (this.rolSeleccionado === "administrador" && !this.nue) {
-//         alert("NUE es requerido");
-//         newUser.usu_rol = this.rolSeleccionado;
-//         newUser.usu_id = this.nue;
-//         return;
-//       }
-
-//       console.log (this.$data);
-//       console.log (newUser);
-//       console.log (auth);
-
-//       //Creamos el usuario con las credenciales proporcionadas 
-
-//       createUserWithEmailAndPassword("gutierrezcardenasjesus@gmail.com","1234567")
-//         .then(() =>{
-//         //  console.log(userCredential);
-//      //   const user= userCredential;
-//           console.log("Usuario Creado");
-//         })
-//         .catch( (error) => {
-//           //const errorCode = error.code;
-//           //const errorMessage = error.message;
-//           console.log(error);
-//             console.log("Usuario Creado'nt");
-//         });
-
-//       // Envía el correo de verificación
-//       this.enviarCorreoVerificacion();
-
-//       // Muestra la alerta
-//       //alert("Se ha enviado un correo de verificación a " + this.correo);
-
-//       // submit the form and clear the fields
-//       // console.log({
-//       //   nombre: this.nombre,
-//       //   apellido: this.apellido,
-//       //   correo: this.correo,
-//       //   contraseña: this.contraseña,
-//       //   rol: this.rolSeleccionado,
-//       //   nua: this.nua,
-//       //   nue: this.nue,
-//       // });
-
-//       this.nombre = "";
-//       this.apellido = "";
-//       this.correo = "";
-//       this.contraseña = "";
-//       this.rolSeleccionado = null;
-//       this.nua = "";
-//       this.nue = "";
-//     },
-//     enviarCorreoVerificacion() {
-      
-//       //console.log("Correo de verificación enviado a: " + this.correo);
-//     },
-//   },
-// };
+const rolest = () => {
+  rolSeleccionado.value = "estudiante";
+  usu_rol.value = "estudiante";
+};
+const roladmin = () => {
+  rolSeleccionado.value = "administrador";
+  usu_rol.value = "administrador";
+};
 </script>
 
 <style scoped>
@@ -301,9 +132,6 @@ const crearUser = () => {
 
 .bg-color {
   background-color: #fdf7d2;
-  background-image: url("@/assets/escalinatas.png");
-  background-size: cover;
-  background-position: center;
 }
 
 .card-background {

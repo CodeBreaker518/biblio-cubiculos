@@ -1,25 +1,11 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
-// put bootstrap icons in the links
-
-const links = [
-  { to: '/admin', text: 'Inicio', icon: 'bi bi-house' },
-  { to: '/admin/cubiculos', text: 'Cubiculos', icon: 'bi bi-box' },
-  // { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' }
-  // { to: '/admin/usuarios', text: 'Usuarios', icon: 'bi bi-person' },
-]
-</script>
-
 <template>
   <!-- Header -->
-  <div class="">
+  <div>
     <header class="navbar navbar-dark d-flex bg-primary">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Panel de Administrador</a>
-
-        <div class="">
-          <button class="btn btn-outline-light" type="button">Cerrar Sesion</button>
+        <div>
+          <button @click="logout" class="btn btn-outline-light" type="button">Cerrar Sesión</button>
         </div>
       </div>
     </header>
@@ -34,7 +20,6 @@ const links = [
         >
           <div class="position-sticky">
             <ul class="nav d-flex flex-column gap-2 list-group">
-              <!-- add the class 'active' to the active link -->
               <RouterLink
                 v-for="link in links"
                 :key="link.to"
@@ -56,15 +41,32 @@ const links = [
           <div class="pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">{{ $route.name }}</h1>
           </div>
-          <!-- Aquí puedes poner el contenido principal de tu página -->
           <div class="container">
-            <RouterView />
+            <router-view />
           </div>
         </main>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+
+const router = useRouter();
+
+const logout = () => {
+  router.push('/');
+}
+
+const links = [
+  { to: '/admin', text: 'Inicio', icon: 'bi bi-house' },
+  { to: '/admin/cubiculos', text: 'Cubículos', icon: 'bi bi-box' },
+  { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' },
+  { to: '/admin/avisos', text: 'Avisos', icon: 'bi bi-bookmark' },
+  { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' }  // Añadido desde el otro código
+]
+</script>
 
 <style scoped>
 .active {
@@ -88,26 +90,40 @@ const links = [
 }
 
 .nav-item {
-  list-style-type: none;
+  list-style-type: none; /* Eliminar los puntos de la lista */
   transition: 300ms all;
   background-color: #f8f9fa;
   box-shadow: 0;
   border: 1px solid #f8f9fa;
+  border-radius: 10px; /* Añadir bordes redondeados */
+  margin-bottom: 10px; /* Espacio entre elementos de la lista */
 }
 
 .nav-item:hover {
-  background-color: #c9a400;
+  background-color: #bfa303; /* Cambiar el color de fondo al pasar el ratón */
   color: white !important;
 }
 .nav-item.active {
   color: white !important;
-  border: 1px solid #c9a400;
-  background-color: #c9a400;
+  border: 1px solid #bfa303; /* Cambiar el borde activo */
+  background-color: #bfa303;
 }
 
-.transition-colors {
-  transition:
-    background-color 0.2s ease-in-out,
-    color 0.2s ease-in-out;
+/* Estilos para los botones de aceptar y cancelar */
+.btn-aceptar {
+  background-color: #28a745; /* Color verde */
+  border-color: #28a745;
+}
+
+.btn-cancelar {
+  background-color: #dc3545; /* Color rojo */
+  border-color: #dc3545;
+}
+
+.btn-aceptar:hover,
+.btn-cancelar:hover {
+  background-color: #218838; /* Cambio de tono al pasar el ratón */
+  border-color: #218838;
 }
 </style>
+
