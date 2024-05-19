@@ -1,13 +1,12 @@
 <template>
   <div class="recovery-page">
-    
     <header>
-      <img src="@/assets/logo.png" alt="Logo">
+      <img src="@/assets/logo.png" alt="Logo de la empresa">
       <h1 style="color: #cca300;">Recuperar Contraseña</h1>
       <router-link to="/login" style="color: #705f7b;">Volver al inicio de sesión</router-link>
     </header>
 
-    <form @submit.prevent="sendRecoveryEmail">
+    <form @submit.prevent="sendMail">
       <label for="email" style="color: #cca300;">Correo Electrónico:</label>
       <input type="email" id="email" v-model="email" required style="background-color: #e6e6b8; border: 1px solid #705f7b;">
       <button type="submit" style="background-color: #cca300;">Enviar</button>
@@ -18,22 +17,30 @@
     </div>
 
     <footer style="color: #cca300;">
-      
     </footer>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      email: ''
-    };
-  },
-  methods: {
-    sendRecoveryEmail() {
-      console.log('Se enviará un correo electrónico de recuperación a:', this.email);
-    }
+<script setup>
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const auth = getAuth();
+const email = ref("");
+
+const sendMail = () => {
+  if (email.value !== "" && email.value.includes("@")) {
+    sendPasswordResetEmail(auth, email.value).then(() => {
+      alert("Se ha enviado el correo para restablecer su contraseña");
+      router.push("/");
+    }).catch((error) => {
+      console.log(error);
+      alert("Algo salió mal. Intente de nuevo más tarde");
+    });
+  } else {
+    alert("Por favor, ingrese una dirección de correo electrónico válida.");
   }
 };
 </script>
