@@ -9,16 +9,14 @@
           data-bs-target="#crearCubiculoModal"
           data-bs-whatever="Crear cubículo">
           <i class="bi bi-plus-circle-dotted"></i>
-          Crear Cubiculo
+          Crear Cubículo
         </button>
       </div>
 
       <!-- Filtro de cubículos -->
       <div class="row">
         <div class="col-md-3 mb-3">
-          <label for="statusFilter" class="form-label"
-            >Filtrar por estado:</label
-          >
+          <label for="statusFilter" class="form-label">Filtrar por estado:</label>
           <select class="form-select" v-model="statusFilter">
             <option value="all">Todos</option>
             <option value="available">Disponible</option>
@@ -44,7 +42,7 @@
                 <div class="btn-group">
                   <button
                     type="button"
-                    class="btn btn-sm btn-outline-success"
+                    class="btn btn-sm btn-outline-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#editarCubiculoModal"
                     data-bs-whatever="Editar cubículo"
@@ -78,7 +76,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editarCubiculoModal">
-              Editar Cubiculo
+              Editar Cubículo
             </h5>
             <button
               type="button"
@@ -101,7 +99,7 @@
                 v-model="cubiculoToEdit.descripcion"
                 placeholder="Descripción del cubículo" />
               <button
-                class="btn btn-success mt-2"
+                class="btn btn-primary mt-2"
                 @click="saveCubiculo"
                 data-bs-dismiss="modal">
                 Guardar cambios
@@ -118,7 +116,7 @@
       </div>
     </div>
 
-    <!-- MODAL PARA CREAR UN CUBICULO -->
+    <!-- MODAL PARA CREAR UN CUBÍCULO -->
     <div
       class="modal fade"
       id="crearCubiculoModal"
@@ -129,7 +127,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="crearCubiculoModal">Crear Cubiculo</h5>
+            <h5 class="modal-title" id="crearCubiculoModal">Crear Cubículo</h5>
             <button
               type="button"
               class="btn-close"
@@ -333,3 +331,73 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  padding: 20px;
+  background: #002f6c;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  margin: 20px auto;
+  color: #ffffff;
+}
+
+.btn-outline-primary {
+  color: #002f6c;
+  border-color: #002f6c;
+}
+
+.btn-outline-primary:hover {
+  color: #ffffff;
+  background-color: #002f6c;
+  border-color: #002f6c;
+}
+
+.btn-primary {
+  color: #ffffff;
+  background-color: #c9a400;
+  border-color: #c9a400;
+}
+
+.btn-primary:hover {
+  background-color: #bfa303;
+  border-color: #bfa303;
+}
+
+.btn-secondary {
+  color: #ffffff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-secondary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #002f6c;
+}
+
+.card-text {
+  color: #6c757d;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.modal-title {
+  color: #002f6c;
+}
+</style>

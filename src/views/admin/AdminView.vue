@@ -1,5 +1,4 @@
 <template>
-  <!-- Header -->
   <div>
     <header class="navbar navbar-dark d-flex bg-primary">
       <div class="container-fluid">
@@ -16,22 +15,23 @@
         <nav
           id="sidebar"
           class="col-md-3 col-lg-2 d-md-block bg-light sidebar py-4"
-          style="background-color: #e3f2fd"
         >
           <div class="position-sticky">
-            <ul class="nav d-flex flex-column gap-2 list-group">
-              <RouterLink
+            <ul class="nav flex-column gap-2">
+              <li
                 v-for="link in links"
                 :key="link.to"
-                :to="link.to"
-                class="nav-item nav-link text-dark list-group-item transition-colors rounded-3 d-flex align-items-center gap-2"
-                :class="{ active: $route.path === link.to }"
+                class="nav-item"
               >
-                <i :class="link.icon"></i>
-                <p class="p-0 m-0">
+                <router-link
+                  :to="link.to"
+                  class="nav-link d-flex align-items-center gap-2"
+                  :class="{ active: $route.path === link.to }"
+                >
+                  <i :class="link.icon"></i>
                   {{ link.text }}
-                </p>
-              </RouterLink>
+                </router-link>
+              </li>
             </ul>
           </div>
         </nav>
@@ -69,61 +69,63 @@ const links = [
 </script>
 
 <style scoped>
-.active {
+.navbar {
+  background-color: #002f6c !important;
+}
+
+.navbar-brand {
+  color: #c9a400 !important;
+  font-weight: bold;
+}
+
+.btn-outline-light {
+  color: #ffffff;
+  border-color: #c9a400;
+}
+
+.btn-outline-light:hover {
+  color: #002f6c;
   background-color: #c9a400;
+  border-color: #c9a400;
 }
 
 #sidebar {
+  background-color: #e3f2fd;
   max-width: 200px;
   height: calc(100vh - 72px);
+  padding-top: 1rem;
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    max-width: 100%;
-    height: 100%;
-  }
-}
-
-.nav-items-list {
-  height: 100%;
-}
-
-.nav-item {
-  list-style-type: none; /* Eliminar los puntos de la lista */
+.nav-link {
+  color: #002f6c;
+  font-weight: bold;
   transition: 300ms all;
-  background-color: #f8f9fa;
-  box-shadow: 0;
-  border: 1px solid #f8f9fa;
-  border-radius: 10px; /* Añadir bordes redondeados */
-  margin-bottom: 10px; /* Espacio entre elementos de la lista */
+  border-radius: 5px;
 }
 
-.nav-item:hover {
-  background-color: #bfa303; /* Cambiar el color de fondo al pasar el ratón */
-  color: white !important;
-}
-.nav-item.active {
-  color: white !important;
-  border: 1px solid #bfa303; /* Cambiar el borde activo */
-  background-color: #bfa303;
+.nav-link:hover {
+  color: #ffffff !important;
+  background-color: #c9a400 !important;
 }
 
-/* Estilos para los botones de aceptar y cancelar */
-.btn-aceptar {
-  background-color: #28a745; /* Color verde */
-  border-color: #28a745;
+.nav-link.active {
+  color: #ffffff !important;
+  background-color: #bfa303 !important;
 }
 
-.btn-cancelar {
-  background-color: #dc3545; /* Color rojo */
-  border-color: #dc3545;
+.nav-link i {
+  font-size: 1.2rem;
 }
 
-.btn-aceptar:hover,
-.btn-cancelar:hover {
-  background-color: #218838; /* Cambio de tono al pasar el ratón */
-  border-color: #218838;
+.main-content {
+  padding: 20px;
+}
+
+.container {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
 }
 </style>
-
