@@ -1,7 +1,8 @@
-<template>
+  <template>
     <div class="reserva-cubiculo">
       <h1>Reservar Cubículo</h1>
-      <form @submit.prevent="handleSubmit">
+
+      <form @submit.prevent = "crearReserva">
         
         <div class="mb-3">
           <label for="cubiculo" class="form-label">Cubículo</label>
@@ -32,35 +33,99 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    data() {
-      return {
-        cubiculo: '',
-        fecha: '',
-        horaInicio: '',
-        horaFin: '',
-        cubiculos: [
+  <script setup>
+
+//import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+import { getAuth ,onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+import { ref } from "vue";
+import { db } from "../firebaseConfig";
+ const router = useRouter();
+
+const auth = getAuth();
+var usuario = ref("");
+const cubiculo  = ref("");
+const fecha = ref("");
+const horaInicio = ref("");
+const horaFin = ref("");
+const status = ref("open");
+const cubiculos = [
           { id: 1, name: 'Cubículo 1' },
           { id: 2, name: 'Cubículo 2' },
-          { id: 3, name: 'Cubículo 3' }
-        ]
-      };
-    },
-    methods: {
-      handleSubmit() {
-        const reserva = {
-          usuario: this.usuario,
-          cubiculo: this.cubiculo,
-          fecha: this.fecha,
-          horaInicio: this.horaInicio,
-          horaFin: this.horaFin
-        };
-        console.log('Reserva realizada:', reserva);
-        // Aquí puedes realizar una solicitud a la API para guardar la reserva
-      }
-    }
-  };
+          { id: 3, name: 'Cubículo 3' }]
+
+
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+    usuario= user.uid;
+    console.log(usuario);
+
+  } else {
+    console.log("No existe usuario loggeado");
+    router.push("/");
+  }
+});
+
+const crearReserva = async () => {
+
+  if ( cubiculo.value && fecha.value && horaFin.value && horaFin.value)
+  {
+      await addDoc(collection (db,"reserva"), 
+      {
+        r_usuario : usuario,
+        r_cubiculo : cubiculo.value,
+        r_fecha : fecha.value,
+        r_hora_inicio : horaFin.value,
+        r_hora_fin : horaInicio.value,
+        r_status : status
+
+        
+      });
+      alert("Reserva Creada con exito")
+      console.log ("Reserva Creada ");
+      router.push('/InterUsuario');
+      
+  }
+  else
+  {
+    alert("Complete todos los campos para continuar");
+  }
+}
+
+
+
+  // export default {
+  //   data() {
+  //     // return {
+  //     //   cubiculo: '',
+  //     //   fecha: '',
+  //     //   horaInicio: '',
+  //     //   horaFin: '',
+  //     //   cubiculos: [
+  //     //     { id: 1, name: 'Cubículo 1' },
+  //     //     { id: 2, name: 'Cubículo 2' },
+  //     //     { id: 3, name: 'Cubículo 3' }
+  //     //   ]
+  //     // };
+  //   },
+  //   methods: {
+  //     handleSubmit() {
+  //       const reserva = {
+  //         usuario: this.usuario,
+  //         cubiculo: this.cubiculo,
+  //         fecha: this.fecha,
+  //         horaInicio: this.horaInicio,
+  //         horaFin: this.horaFin
+  //       };
+  //       console.log('Reserva realizada:', reserva);
+  //       // Aquí puedes realizar una solicitud a la API para guardar la reserva
+  //     }
+  //   }
+  // };
   </script>
   
   <style scoped>

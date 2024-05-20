@@ -52,12 +52,17 @@
           </div>
           <div class="fibonacci-item fibonacci3">
             <p>MI CUBÍCULO</p>
-            <div v-if="!miCubiculo">
+            <div v-if="!hasBooking">
               <p>No tienes cubículo, puedes solicitar uno</p>
               <router-link to="/ReservarUser">
                 <button>Solicitar cubículo</button>
               </router-link>
             </div>
+            <div >
+
+            </div>
+          
+
           </div>
           <div class="fibonacci-item fibonacci2">
             <p>SANCIONES</p>
@@ -83,6 +88,29 @@
 
 <script>
 import { reactive, toRefs, computed } from "vue";
+import { getAuth ,signOut,onAuthStateChanged  } from "firebase/auth";
+
+import { collection, query, where, getDocs} from "firebase/firestore";
+import { db } from "../firebaseConfig";
+const auth = getAuth();
+var usuario = "xi5daZ8ReUOd7Myh1EQtVmc3J6L2";
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+    usuario= user.uid;
+    console.log(usuario);
+
+  } 
+});
+//,where ("r_status" , "==", "open")
+const mQuery = query (collection(db,"reserva"),where ("r_usuario","==",usuario)) ;
+const querySnapshot = await getDocs(mQuery);
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+});
+
+
 
 export default {
   data() {
@@ -154,7 +182,15 @@ export default {
       this.showMenu = !this.showMenu;
     },
     logout() {
-      this.$router.push('/');
+      signOut(auth).then(() => {
+        
+        this.$router.push('/');
+         }).catch((error) => {
+            console.log(error);
+        });
+
+
+
     }
   }
 };
