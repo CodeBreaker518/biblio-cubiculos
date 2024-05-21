@@ -140,31 +140,31 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from 'vue'
-import { Modal } from 'bootstrap'
+import { reactive, ref, computed } from 'vue';
+import * as bootstrap from 'bootstrap';
 
 // Datos simulados para estudiantes y logros
 const students = [
   { id: 1, name: 'Juan Pérez' },
   { id: 2, name: 'María López' },
   { id: 3, name: 'Carlos Sánchez' }
-]
+];
 
 const achievements = reactive([
   { id: 1, name: 'Logro 1', description: 'Completa el curso de Vue.js', completed: true },
   { id: 2, name: 'Logro 2', description: 'Resuelve 10 problemas de matemáticas', completed: false },
   { id: 3, name: 'Logro 3', description: 'Participa en un proyecto de equipo', completed: false }
-])
+]);
 
-const newAchievement = reactive({ name: '', description: '' })
-const selectedStudent = ref(null)
-const editAchievementForm = reactive({ id: null, name: '', description: '', completed: false })
+const newAchievement = reactive({ name: '', description: '' });
+const selectedStudent = ref(null);
+const editAchievementForm = reactive({ id: null, name: '', description: '', completed: false });
 
 const filteredAchievements = computed(() =>
   achievements.filter((achievement) =>
     achievement.name.toLowerCase().includes('')
   )
-)
+);
 
 function createAchievement() {
   achievements.push({
@@ -172,47 +172,58 @@ function createAchievement() {
     name: newAchievement.name,
     description: newAchievement.description,
     completed: false
-  })
-  newAchievement.name = ''
-  newAchievement.description = ''
-  new Modal(document.getElementById('createAchievementModal')).hide()
+  });
+  newAchievement.name = '';
+  newAchievement.description = '';
+  hideModal('createAchievementModal');
 }
 
 function assignAchievement() {
   if (selectedStudent.value !== null) {
-    console.log(`Asignado el logro ${editAchievementForm.id} a ${selectedStudent.value}`)
-    new Modal(document.getElementById('assignAchievementModal')).hide()
+    console.log(`Asignado el logro ${editAchievementForm.id} a ${selectedStudent.value}`);
+    hideModal('assignAchievementModal');
   }
 }
 
 function selectAchievementForAssignment(achievement) {
-  editAchievementForm.id = achievement.id
-  selectedStudent.value = null
-  new Modal(document.getElementById('assignAchievementModal')).show()
+  editAchievementForm.id = achievement.id;
+  selectedStudent.value = null;
 }
 
 function selectAchievementForEdit(achievement) {
-  editAchievementForm.id = achievement.id
-  editAchievementForm.name = achievement.name
-  editAchievementForm.description = achievement.description
-  editAchievementForm.completed = achievement.completed
-  new Modal(document.getElementById('editAchievementModal')).show()
+  editAchievementForm.id = achievement.id;
+  editAchievementForm.name = achievement.name;
+  editAchievementForm.description = achievement.description;
+  editAchievementForm.completed = achievement.completed;
 }
 
 function editAchievement() {
-  const achievement = achievements.find((ach) => ach.id === editAchievementForm.id)
+  const achievement = achievements.find((ach) => ach.id === editAchievementForm.id);
   if (achievement) {
-    achievement.name = editAchievementForm.name
-    achievement.description = editAchievementForm.description
-    achievement.completed = editAchievementForm.completed
+    achievement.name = editAchievementForm.name;
+    achievement.description = editAchievementForm.description;
+    achievement.completed = editAchievementForm.completed;
   }
-  new Modal(document.getElementById('editAchievementModal')).hide()
+  hideModal('editAchievementModal');
 }
 
 function deleteAchievement(id) {
-  const index = achievements.findIndex((ach) => ach.id === id)
+  const index = achievements.findIndex((ach) => ach.id === id);
   if (index !== -1) {
-    achievements.splice(index, 1)
+    achievements.splice(index, 1);
+  }
+}
+
+function hideModal(modalId) {
+  const modalElement = document.getElementById(modalId);
+  if (modalElement) {
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    if (modalInstance) {
+      modalInstance.hide();
+    } else {
+      const newModalInstance = new bootstrap.Modal(modalElement);
+      newModalInstance.hide();
+    }
   }
 }
 </script>
