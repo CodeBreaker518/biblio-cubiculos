@@ -1,6 +1,6 @@
 <template>
   <span :class="['badge', status ? 'badge-success' : 'badge-danger']">
-    {{ status ? 'Disponible' : 'Ocupado' }}
+    {{ status ? "Disponible" : "Ocupado" }}
   </span>
 </template>
 
@@ -9,17 +9,19 @@ export default {
   props: {
     status: {
       type: Boolean,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>
 
 <style scoped>
 .badge {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.25em 0.4em;
-  font-size: 75%;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   text-align: center;

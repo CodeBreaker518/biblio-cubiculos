@@ -1,7 +1,5 @@
 <template>
-  <span :class="['badgeCapacity', 'badge-capacity']">
-    {{ capacity }}
-  </span>
+  <span :class="['badgeCapacity', 'badge-capacity']"> Capacidad: {{ capacity }} </span>
 </template>
 
 <script>
@@ -19,8 +17,8 @@ export default {
 .badgeCapacity {
   display: inline-block;
   padding: 0.25em 0.4em;
-  font-size: 75%;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
@@ -30,7 +28,7 @@ export default {
 
 .badge-capacity {
   color: #fff;
-  background-color: #28a745;
+  background-color: rgb(122, 122, 247);
 }
 
 .badge-danger {
