@@ -1,106 +1,89 @@
 <template>
-  <div class="container py-2">
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="filterStartDate" class="form-label">Fecha de inicio:</label>
-        <input type="date" id="filterStartDate" v-model="filterStartDate" class="form-control" />
-      </div>
-      <div class="col-md-6">
-        <label for="filterEndDate" class="form-label">Fecha de fin:</label>
-        <input type="date" id="filterEndDate" v-model="filterEndDate" class="form-control" />
-      </div>
-    </div>
-
+  <div class="container p-6">
+    <!-- RENDERIZAR TODOS LOS CUBICULOS CON INFORMACION EXTRA -->
     <div class="row">
-      <div
-        class="col-md-10 col-lg-4"
-        v-for="cubiculo in filteredCubiculos"
-        :key="cubiculo.id">
-        <div class="card mb-4 shadow-sm">
+      <h4>Elige un Cubiculo para reservarlo</h4>
+      <div class="col-md-10 col-lg-4 mt-4" v-for="cubiculo in filteredCubiculos" :key="cubiculo.id">
+        <div class="card mb-4 shadow-sm h-100">
           <div class="card-body">
-            <h5 class="card-title">{{ cubiculo.name }}</h5>
-            <p class="card-text">{{ cubiculo.descripcion }}</p>
-            <p v-if="cubiculo.usuario">Usuario: {{ cubiculo.usuario.name }}</p>
-            <p v-else>Usuario: Ninguno</p>
+            <section class="d-flex flex-column justify-content-between align-items-start mb-2">
+              <h5 class="card-title">{{ cubiculo.nombre }}</h5>
+              <div class="d-flex flex-row justify-content-between align-items-center mb-2 gap-2">
+                <BadgeStatus :status="cubiculo.status" />
+                <BadgeCapacity :capacity="cubiculo.capacidad" />
+              </div>
+              <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
+            </section>
 
-            <p v-if="cubiculo.usuario">
-              Fecha de inicio: {{ cubiculo.start_date }}
-            </p>
-            <p v-if="cubiculo.usuario">Fecha de fin: {{ cubiculo.end_date }}</p>
+            <div class="card mb-3">
+              <div class="card-body">
+                <p class="user-title" v-if="cubiculo.user">Usuario: {{ getUser(cubiculo.user) }}</p>
+                <p class="user-title" v-else>Usuario: Ninguno</p>
+
+                <p class="card-text" v-if="cubiculo.user">
+                  <strong>Fecha de inicio: <br /></strong> {{ cubiculo.fecha_inicio }}
+                </p>
+                <p class="card-text" v-if="cubiculo.user">
+                  <strong>Fecha de fin:<br /></strong> {{ cubiculo.fecha_fin }}
+                </p>
+              </div>
+            </div>
 
             <button
               type="button"
               class="btn btn-sm"
-              :class="cubiculo.usuario ? 'btn-danger' : 'btn-outline-success'"
+              :class="cubiculo.user ? 'btn-danger' : 'btn-outline-success'"
               data-bs-toggle="modal"
               data-bs-target="#createReservationModal"
-              :disabled="cubiculo.usuario"
+              :disabled="cubiculo.user"
               @click="abrirModalReserva(cubiculo)">
-              {{ cubiculo.usuario ? "Reservado" : "Reservar" }}
+              {{ cubiculo.user ? "Reservado" : "Reservar" }}
             </button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal para Reservar Cubículo -->
-    <div
-      class="modal fade"
-      id="createReservationModal"
-      tabindex="-1"
-      aria-labelledby="createReservationModalLabel"
-      aria-hidden="true"
-      modal-dialog>
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createReservationModalLabel">
-              Reservar cubículo
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div>
-              <label for="usuario">Usuario</label>
-              <select class="form-select" v-model="usuario">
-                <option
-                  v-for="user in usuarios"
-                  :key="user.id"
-                  :value="user.id">
-                  {{ user.name }}
-                </option>
-              </select>
-
-              <label for="fecha">Fecha</label>
-              <input type="date" class="form-control" v-model="fecha" />
-
-              <div class="row">
+      <!-- Modal para Reservar Cubículo -->
+      <div
+        class="modal fade"
+        id="createReservationModal"
+        tabindex="-1"
+        aria-labelledby="createReservationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title text-white" id="createReservationModalLabel">Reservar Cubículo</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-black">
+              <div class="mb-3">
+                <label for="usuario" class="form-label">Usuario</label>
+                <select class="form-select" v-model="usuario">
+                  <option disabled value="">Seleccionar usuario</option>
+                  <option v-for="user in usuarios" :key="user.id" :value="user.id">{{ user.u_nombre }}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="fecha" class="form-label">Fecha</label>
+                <input type="date" class="form-control" v-model="fecha" />
+              </div>
+              <div class="row mb-3">
                 <div class="col">
-                  <label for="horaInicio">Hora de inicio</label>
+                  <label for="horaInicio" class="form-label">Hora de inicio</label>
                   <input type="time" class="form-control" v-model="horaInicio" />
                 </div>
                 <div class="col">
-                  <label for="horaFin">Hora de finalización</label>
+                  <label for="horaFin" class="form-label">Hora de finalización</label>
                   <input type="time" class="form-control" v-model="horaFin" />
                 </div>
               </div>
-
-              <button
-                class="btn btn-primary mt-2"
-                data-bs-dismiss="modal"
-                @click="reservarCubiculo(cubiculoActual)">
-                Reservar cubículo
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="reservarCubiculo(cubiculoActual)">
+                Reservar
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary ms-2 mt-2"
-                data-bs-dismiss="modal">
-                Cancelar
-              </button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             </div>
           </div>
         </div>
@@ -110,59 +93,89 @@
 </template>
 
 <script>
-import { reactive, toRefs, computed } from "vue";
+import BadgeStatus from "../../components/BadgeStatus.vue";
+import BadgeCapacity from "../../components/BadgeCapacity.vue";
+import { reactive, onMounted, computed, toRefs } from "vue";
+import { collection, addDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebaseConfig"; // Asegúrate de que la ruta sea correcta
 
 export default {
+  components: {
+    BadgeStatus,
+    BadgeCapacity,
+  },
   setup() {
     const state = reactive({
       cubiculoActual: null,
-      cubiculos: [
-        {
-          id: 1,
-          name: "Cubículo 1",
-          descripcion: "Cubículo de 4x4 metros",
-          start_date: null,
-          end_date: null,
-          status: false,
-          usuario: null,
-        },
-        {
-          id: 2,
-          name: "Cubículo 2",
-          descripcion: "Cubículo de 4x4 metros",
-          start_date: null,
-          end_date: null,
-          status: false,
-          usuario: null,
-        },
-        // Más datos de cubículos aquí
-      ],
+      cubiculos: [],
       usuario: null,
       fecha: null,
       horaInicio: null,
       horaFin: null,
-      usuarios: [
-        { id: 1, name: "Usuario 1" },
-        { id: 2, name: "Usuario 2" },
-      ],
+      usuarios: [],
       filterStartDate: null,
       filterEndDate: null,
     });
 
-    function abrirModalReserva(cubiculo) {
-      state.cubiculoActual = cubiculo;
-    }
+    const usuariosCollection = collection(db, "users"); // Cambia 'usuarios' por el nombre de tu colección de usuarios
+    const cubiculosCollection = collection(db, "cubiculos");
 
-    function reservarCubiculo() {
-      const usuario = state.usuarios.find((u) => u.id === state.usuario);
-      if (!usuario || !state.fecha || !state.horaInicio || !state.horaFin) {
+    const cargarCubiculos = () => {
+      onSnapshot(cubiculosCollection, (snapshot) => {
+        state.cubiculos = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      });
+    };
+
+    const cargarUsuarios = () => {
+      onSnapshot(usuariosCollection, (snapshot) => {
+        state.usuarios = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      });
+    };
+
+    const abrirModalReserva = (cubiculo) => {
+      state.cubiculoActual = cubiculo;
+    };
+
+    const reservarCubiculo = async () => {
+      if (!state.usuario || !state.fecha || !state.horaInicio || !state.horaFin) {
+        alert("Todos los campos son obligatorios");
         return;
       }
-      state.cubiculoActual.start_date = state.fecha + " " + state.horaInicio;
-      state.cubiculoActual.end_date = state.fecha + " " + state.horaFin;
-      state.cubiculoActual.status = true;
-      state.cubiculoActual.usuario = usuario;
-    }
+
+      try {
+        const usuarioSeleccionado = state.usuarios.find((user) => user.id === state.usuario);
+        if (!usuarioSeleccionado) {
+          alert("El usuario seleccionado no es válido");
+          return;
+        }
+
+        // Crear la reserva
+        const reservaRef = await addDoc(collection(db, "reserva"), {
+          r_cubiculo: state.cubiculoActual.id,
+          r_usuario: usuarioSeleccionado.id,
+          r_fecha: state.fecha,
+          r_hora_inicio: state.horaInicio,
+          r_hora_fin: state.horaFin,
+        });
+
+        // Actualizar el documento de usuario con el ID de la reserva
+        const usuarioDoc = doc(db, "users", usuarioSeleccionado.id);
+        await updateDoc(usuarioDoc, {
+          u_reserva_id: reservaRef.id,
+        });
+
+        // Actualizar el documento del cubículo
+        const cubiculoDoc = doc(db, "cubiculos", state.cubiculoActual.id);
+        await updateDoc(cubiculoDoc, {
+          status: false,
+          user: usuarioSeleccionado.id,
+          fecha_inicio: state.fecha + " " + state.horaInicio,
+          fecha_fin: state.fecha + " " + state.horaFin,
+        });
+      } catch (error) {
+        console.error("Error al reservar el cubículo: ", error);
+      }
+    };
 
     const filteredCubiculos = computed(() => {
       return state.cubiculos.filter((cubiculo) => {
@@ -171,18 +184,11 @@ export default {
         }
         const cubiculoStartDate = new Date(cubiculo.start_date).getTime();
         const cubiculoEndDate = new Date(cubiculo.end_date).getTime();
-        const filterStartDate = state.filterStartDate
-          ? new Date(state.filterStartDate).getTime()
-          : null;
-        const filterEndDate = state.filterEndDate
-          ? new Date(state.filterEndDate).getTime()
-          : null;
+        const filterStartDate = state.filterStartDate ? new Date(state.filterStartDate).getTime() : null;
+        const filterEndDate = state.filterEndDate ? new Date(state.filterEndDate).getTime() : null;
 
         if (filterStartDate && filterEndDate) {
-          return (
-            cubiculoStartDate >= filterStartDate &&
-            cubiculoEndDate <= filterEndDate
-          );
+          return cubiculoStartDate >= filterStartDate && cubiculoEndDate <= filterEndDate;
         } else if (filterStartDate) {
           return cubiculoStartDate >= filterStartDate;
         } else if (filterEndDate) {
@@ -192,17 +198,33 @@ export default {
       });
     });
 
+    onMounted(() => {
+      cargarCubiculos();
+      cargarUsuarios();
+    });
+
+    const getUser = (userId) => {
+      const user = state.usuarios.find((u) => u.id === userId);
+      return user ? user.u_nombre : "Desconocido";
+    };
+
     return {
       ...toRefs(state),
       abrirModalReserva,
       reservarCubiculo,
       filteredCubiculos,
+      getUser,
     };
   },
 };
 </script>
 
 <style scoped>
+.cubicles {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 .container {
   padding: 20px;
   background: #002f6c;
@@ -291,5 +313,9 @@ export default {
 
 .modal-title {
   color: #002f6c;
+}
+
+.user-title {
+  font-weight: bold;
 }
 </style>

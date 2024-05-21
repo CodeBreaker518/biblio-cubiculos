@@ -30,14 +30,14 @@
         <div v-for="cubiculo in cubiculosFiltrados" :key="cubiculo.id" class="col-md-10 col-lg-4">
           <div class="card mb-4 shadow-sm">
             <article class="card-body">
-              <section class="d-flex justify-content-between align-items-start mb-2">
-                <p class="card-title">{{ cubiculo.nombre }}</p>
-                <div class="d-flex flex-column justify-center gap-2">
+              <section class="d-flex flex-column justify-content-between align-items-start mb-2">
+                <h5 class="card-title">{{ cubiculo.nombre }}</h5>
+                <div class="d-flex flex-row justify-content-between align-items-center mb-2 gap-2">
                   <BadgeStatus :status="cubiculo.status" />
                   <BadgeCapacity :capacity="cubiculo.capacidad" />
                 </div>
+                <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
               </section>
-              <p class="card-text">{{ cubiculo.descripcion }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button
@@ -79,13 +79,18 @@
           <div class="modal-body text-black">
             <div class="d-flex flex-column justify-content-center align-items-start">
               <label for="nombre">Nombre</label>
-              <input class="form-control" v-model="cub_nombre" placeholder="Nombre del cubículo" />
+              <input id="nombre" class="form-control" v-model="cub_nombre" placeholder="Nombre del cubículo" />
 
-              <label for="descripcion">Descripción</label>
-              <input class="form-control mt-2" v-model="cub_descripcion" placeholder="Descripción del cubículo" />
+              <label for="descripcion" class="mt-4">Descripción</label>
+              <input id="descripcion" class="form-control" v-model="cub_descripcion" placeholder="Descripción del cubículo" />
 
-              <label for="capacidad">Capacidad</label>
-              <input type="number" class="form-control mt-2" v-model="cub_capacidad" placeholder="Capacidad del cubículo" />
+              <label for="capacidad" class="mt-4">Capacidad</label>
+              <input
+                id="capacidad"
+                type="number"
+                class="form-control"
+                v-model="cub_capacidad"
+                placeholder="Capacidad del cubículo" />
 
               <div class="w-100 mt-2 d-flex justify-content-center gap-2">
                 <button
@@ -113,18 +118,26 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div>
-            <label for="name">Nombre</label>
-            <input class="form-control" v-model="cub_nombre" placeholder="Nombre del cubículo" />
+          <div class="d-flex flex-column justify-content-center align-items-start">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" class="form-control" v-model="cub_nombre" placeholder="Nombre del cubículo" />
 
-            <label for="descripcion">Descripción</label>
-            <input class="form-control mt-2" v-model="cub_descripcion" placeholder="Descripción del cubículo" />
+            <label for="descripcion" class="mt-4">Descripción</label>
+            <input id="descripcion" class="form-control" v-model="cub_descripcion" placeholder="Descripción del cubículo" />
 
-            <label for="capacidad">Capacidad</label>
-            <input type="number" class="form-control mt-2" v-model="cub_capacidad" placeholder="Capacidad del cubículo" />
-
-            <button class="btn btn-primary mt-2" data-bs-dismiss="modal" @click="guardarCambiosCubiculo">Guardar cambios</button>
-            <button type="button" class="btn btn-secondary ms-2 mt-2" data-bs-dismiss="modal">Cancelar</button>
+            <label for="capacidad" class="mt-4">Capacidad</label>
+            <input
+              id="capacidad"
+              type="number"
+              class="form-control"
+              v-model="cub_capacidad"
+              placeholder="Capacidad del cubículo" />
+            <div class="w-100 mt-2 d-flex justify-content-center gap-2">
+              <button class="btn btn-primary mt-2" data-bs-dismiss="modal" @click="guardarCambiosCubiculo">
+                Guardar cambios
+              </button>
+              <button type="button" class="btn btn-secondary ms-2 mt-2" data-bs-dismiss="modal">Cancelar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -204,6 +217,8 @@ const crearCubiculo = async () => {
         nombre: cub_nombre.value,
         capacidad: cub_capacidad.value,
         descripcion: cub_descripcion.value,
+        fecha_inicio: null,
+        fecha_fin: null,
         status: true,
         user: null,
       });
