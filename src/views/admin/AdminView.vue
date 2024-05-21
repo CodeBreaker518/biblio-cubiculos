@@ -1,7 +1,6 @@
 <template>
-  <!-- Header -->
   <div>
-    <header class="navbar navbar-dark d-flex" style="background-color: #002f6c;">
+    <header class="navbar navbar-dark d-flex" style="background-color: #002147;">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Panel de Administrador</a>
         <div>
@@ -10,21 +9,31 @@
       </div>
     </header>
 
-    <!-- Sidebar -->
     <div class="container-fluid">
       <div class="row">
-        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar py-4" style="background-color: #e3f2fd">
+        <nav
+          id="sidebar"
+          class="col-md-3 col-lg-2 d-md-block sidebar py-4"
+          style="background-color: #002147"
+        >
           <div class="position-sticky">
             <ul class="nav d-flex flex-column gap-2 list-group">
-              <RouterLink v-for="link in links" :key="link.to" :to="link.to" class="nav-item nav-link text-dark list-group-item transition-colors rounded-3 d-flex align-items-center gap-2" :class="{ active: $route.path === link.to }">
+              <RouterLink
+                v-for="link in links"
+                :key="link.to"
+                :to="link.to"
+                class="nav-item nav-link text-light list-group-item transition-colors rounded-3 d-flex align-items-center gap-2"
+                :class="{ active: $route.path === link.to }"
+              >
                 <i :class="link.icon"></i>
-                <p class="p-0 m-0">{{ link.text }}</p>
+                <p class="p-0 m-0">
+                  {{ link.text }}
+                </p>
               </RouterLink>
             </ul>
           </div>
         </nav>
 
-        <!-- Main Content -->
         <main class="col-md-9 col-lg-10 px-md-4">
           <div class="pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">{{ $route.name }}</h1>
@@ -39,26 +48,27 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView, useRouter } from 'vue-router';
+import { RouterLink, RouterView, useRouter } from 'vue-router'
 
 const router = useRouter();
 
 const logout = () => {
   router.push('/');
-};
+}
 
 const links = [
   { to: '/admin', text: 'Inicio', icon: 'bi bi-house' },
   { to: '/admin/cubiculos', text: 'Cubículos', icon: 'bi bi-box' },
   { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' },
   { to: '/admin/avisos', text: 'Avisos', icon: 'bi bi-bookmark' },
-  { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' }
-];
+  { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' },
+  { to: '/admin/sanctions', text: 'Sanciones', icon: 'bi bi-exclamation-circle' } 
+]
 </script>
 
 <style scoped>
 .active {
-  background-color: #c9a400; /* Dorado */
+  background-color: #c9a400; 
 }
 
 #sidebar {
@@ -80,22 +90,22 @@ const links = [
 .nav-item {
   list-style-type: none;
   transition: 300ms all;
-  background-color: #f8f9fa;
+  background-color: #002147;
   box-shadow: 0;
-  border: 1px solid #f8f9fa;
+  border: 1px solid #002147;
   border-radius: 10px;
   margin-bottom: 10px;
 }
 
 .nav-item:hover {
-  background-color: #c9a400; /* Dorado */
-  color: #002f6c !important;
+  background-color: #c9a400; 
+  color: #ffffff !important;
 }
 
 .nav-item.active {
-  color: #002f6c !important;
-  border: 1px solid #c9a400; /* Dorado */
-  background-color: #c9a400; /* Dorado */
+  color: #ffffff !important;
+  border: 1px solid #c9a400; 
+  background-color: #c9a400; 
 }
 
 .btn-aceptar {
@@ -115,17 +125,17 @@ const links = [
 }
 
 .navbar-dark .navbar-brand {
-  color: #c9a400; /* Dorado */
+  color: #c9a400; 
 }
 
 .navbar-dark .btn-outline-light {
-  color: #c9a400; /* Dorado */
-  border-color: #c9a400; /* Dorado */
+  color: #c9a400; 
+  border-color: #c9a400; 
 }
 
 .navbar-dark .btn-outline-light:hover {
-  color: #002f6c;
-  background-color: #c9a400; /* Dorado */
-  border-color: #c9a400; /* Dorado */
+  color: #002147;
+  background-color: #c9a400; 
+  border-color: #c9a400; 
 }
 </style>
