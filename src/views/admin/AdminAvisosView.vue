@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid py-2">
-    <div class="row">
+    <div class="row d-flex justify-content-center">
       <main class="col-md-9 col-lg-10 px-md-4">
         <div class="pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Crear Aviso</h1>
@@ -9,7 +9,7 @@
           <form @submit.prevent="crearAviso">
             <div class="mb-3">
               <label for="titulo" class="form-label">Título</label>
-              <input type="text" class="form-control" id="titulo" v-model="nuevoAviso.titulo" required>
+              <input type="text" class="form-control" id="titulo" v-model="nuevoAviso.titulo" required />
             </div>
             <div class="mb-3">
               <label for="contenido" class="form-label">Contenido</label>
@@ -17,7 +17,7 @@
             </div>
             <div class="mb-3">
               <label for="duracion" class="form-label">Duración (días)</label>
-              <input type="number" class="form-control" id="duracion" v-model="nuevoAviso.duracion" required>
+              <input type="number" class="form-control" id="duracion" v-model="nuevoAviso.duracion" required />
             </div>
             <button type="submit" class="btn btn-primary">Crear Aviso</button>
           </form>
@@ -44,11 +44,11 @@ export default {
   setup() {
     const state = reactive({
       nuevoAviso: {
-        titulo: '',
-        contenido: '',
-        duracion: 1
+        titulo: "",
+        contenido: "",
+        duracion: 1,
       },
-      avisos: []
+      avisos: [],
     });
 
     function crearAviso() {
@@ -60,20 +60,20 @@ export default {
         id: Date.now(),
         titulo: state.nuevoAviso.titulo,
         contenido: state.nuevoAviso.contenido,
-        fechaExpiracion: fechaExpiracion.toLocaleDateString()
+        fechaExpiracion: fechaExpiracion.toLocaleDateString(),
       };
 
       state.avisos.push(nuevoAviso);
 
       // Limpiar los campos del formulario
-      state.nuevoAviso.titulo = '';
-      state.nuevoAviso.contenido = '';
+      state.nuevoAviso.titulo = "";
+      state.nuevoAviso.contenido = "";
       state.nuevoAviso.duracion = 1;
     }
 
     const avisosVigentes = computed(() => {
       const hoy = new Date();
-      return state.avisos.filter(aviso => {
+      return state.avisos.filter((aviso) => {
         const fechaExpiracion = new Date(aviso.fechaExpiracion);
         return fechaExpiracion >= hoy;
       });
@@ -82,9 +82,9 @@ export default {
     return {
       ...toRefs(state),
       crearAviso,
-      avisosVigentes
+      avisosVigentes,
     };
-  }
+  },
 };
 </script>
 

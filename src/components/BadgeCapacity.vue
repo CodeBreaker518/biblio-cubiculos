@@ -1,14 +1,12 @@
 <template>
-  <span :class="['badge', status ? 'badge-success' : 'badge-danger']">
-    {{ status ? "Disponible" : "Ocupado" }}
-  </span>
+  <span :class="['badgeCapacity', 'badge-capacity']"> Capacidad: {{ capacity }} </span>
 </template>
 
 <script>
 export default {
   props: {
-    status: {
-      type: Boolean,
+    capacity: {
+      type: Number,
       required: true,
     },
   },
@@ -16,13 +14,11 @@ export default {
 </script>
 
 <style scoped>
-.badge {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.badgeCapacity {
+  display: inline-block;
   padding: 0.25em 0.4em;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1;
   text-align: center;
   white-space: nowrap;
@@ -30,9 +26,9 @@ export default {
   border-radius: 0.25rem;
 }
 
-.badge-success {
+.badge-capacity {
   color: #fff;
-  background-color: #28a745;
+  background-color: rgb(122, 122, 247);
 }
 
 .badge-danger {
