@@ -3,14 +3,11 @@ import App from './App.vue'
 import router from './router'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import 'bootstrap'
-
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-import { getAuth}     from "firebase/auth";
-
-
+import { getAuth } from "firebase/auth";
 
 // TDO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -18,9 +15,6 @@ import { getAuth}     from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  
-
-
 
   apiKey: "AIzaSyDI48w4GGyMzPY8AERb-BCtLeQEjPHXceM",
   authDomain: "cubiculos-biblioteca.firebaseapp.com",
@@ -34,7 +28,6 @@ const firebaseConfig = {
 // Initialize Firebase
 initializeApp(firebaseConfig);
 const auth = getAuth();
-export default {auth}
+export default { auth }
 
 createApp(App).use(router).mount('#app')
-

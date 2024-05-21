@@ -12,8 +12,9 @@ import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
-import ChangePasswordView from "../views/ChangePasswordView.vue";  // Importa la nueva vista
+import ChangePasswordView from "../views/ChangePasswordView.vue";
 import ReservarCubiculosUserView from "../views/ReservarCubiculosUserView.vue";
+import InicioView from "../views/admin/InicioView.vue";  // Importa la vista Inicio
 
 const routes = [
   {
@@ -29,7 +30,7 @@ const routes = [
       {
         path: "",
         name: "admin",
-        component: AdminCubiculosView,
+        component: InicioView,  // Establece la vista Inicio como predeterminada
       },
       {
         path: "cubiculos",
@@ -91,12 +92,12 @@ const routes = [
   {
     path: "/change-password",
     name: "ChangePassword",
-    component: ChangePasswordView  // Agrega la nueva ruta para cambiar la contraseña
+    component: ChangePasswordView,
   },
   {
     path: "/ReservarUser",
     name: "ReservarUser",
-    component: ReservarCubiculosUserView
+    component: ReservarCubiculosUserView,
   },
 ];
 
