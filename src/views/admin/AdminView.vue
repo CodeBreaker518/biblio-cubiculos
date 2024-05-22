@@ -64,7 +64,9 @@ const links = [
   { to: '/admin/cubiculos', text: 'Cubículos', icon: 'bi bi-box' },
   { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' },
   { to: '/admin/avisos', text: 'Avisos', icon: 'bi bi-bookmark' },
-  { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' }  // Añadido desde el otro código
+  { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' },  // Añadido desde el otro código
+
+  { to: '/admin/FinalizarReservas', text: 'Finalizar Reservas', icon: 'bi bi-clock-history' }
 ]
 </script>
 

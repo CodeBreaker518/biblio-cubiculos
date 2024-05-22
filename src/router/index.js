@@ -14,6 +14,7 @@ import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
 import ChangePasswordView from "../views/ChangePasswordView.vue";  // Importa la nueva vista
 import ReservarCubiculosUserView from "../views/ReservarCubiculosUserView.vue";
+import FinalizarReservas from "../views/admin/FinalizarReservasView.vue";
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
         path: "achievements",
         name: "Logros",
         component: AchievementsView,
+      },
+      {
+        path: "FinalizarReservas",
+        name: "finalizarReservas",
+        component: FinalizarReservas,
       },
     ],
   },
