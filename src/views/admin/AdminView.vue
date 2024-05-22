@@ -53,6 +53,7 @@ import { RouterLink, RouterView, useRouter } from 'vue-router'
 const router = useRouter();
 
 const logout = () => {
+  // Ensure session cleanup here
   router.push('/');
 }
 
@@ -62,7 +63,8 @@ const links = [
   { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' },
   { to: '/admin/avisos', text: 'Avisos', icon: 'bi bi-bookmark' },
   { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' },
-  { to: '/admin/sanctions', text: 'Sanciones', icon: 'bi bi-exclamation-circle' } 
+  { to: '/admin/sanctions', text: 'Sanciones', icon: 'bi bi-exclamation-circle' },
+  { to: '/admin/FinalizarReservas', text: 'Finalizar Reservas', icon: 'bi bi-clock-history' }
 ]
 </script>
 

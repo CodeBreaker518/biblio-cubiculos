@@ -12,9 +12,10 @@ import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
-import SanctionsView from "../views/admin/SanctionsView.vue"; // Nueva importación
+import SanctionsView from "../views/admin/SanctionsView.vue"; 
 import ChangePasswordView from "../views/ChangePasswordView.vue";
 import ReservarCubiculosUserView from "../views/ReservarCubiculosUserView.vue";
+import FinalizarReservas from "../views/admin/FinalizarReservasView.vue";
 
 const routes = [
   {
@@ -53,9 +54,14 @@ const routes = [
         component: AchievementsView,
       },
       {
+        path: "finalizar-reservas",
+        name: "FinalizarReservas",
+        component: FinalizarReservas,
+      },
+      {
         path: "sanctions",
         name: "Sanciones",
-        component: SanctionsView, // Nueva ruta
+        component: SanctionsView, 
       },
     ],
   },
