@@ -12,7 +12,8 @@ import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
-import ChangePasswordView from "../views/ChangePasswordView.vue";  // Importa la nueva vista
+import SanctionsView from "../views/admin/SanctionsView.vue"; 
+import ChangePasswordView from "../views/ChangePasswordView.vue";
 import ReservarCubiculosUserView from "../views/ReservarCubiculosUserView.vue";
 import FinalizarReservas from "../views/admin/FinalizarReservasView.vue";
 
@@ -53,9 +54,14 @@ const routes = [
         component: AchievementsView,
       },
       {
-        path: "FinalizarReservas",
-        name: "finalizarReservas",
+        path: "finalizar-reservas",
+        name: "FinalizarReservas",
         component: FinalizarReservas,
+      },
+      {
+        path: "sanctions",
+        name: "Sanciones",
+        component: SanctionsView, 
       },
     ],
   },
@@ -97,7 +103,7 @@ const routes = [
   {
     path: "/change-password",
     name: "ChangePassword",
-    component: ChangePasswordView  // Agrega la nueva ruta para cambiar la contraseña
+    component: ChangePasswordView,
   },
   {
     path: "/ReservarUser",

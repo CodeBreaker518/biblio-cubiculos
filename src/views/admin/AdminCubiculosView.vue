@@ -4,7 +4,7 @@
       <div class="py-4">
         <button
           type="button"
-          class="btn btn-outline-primary"
+          class="btn btn-outline-warning"
           data-bs-toggle="modal"
           data-bs-target="#crearCubiculoModal"
           data-bs-whatever="Crear cubículo">
@@ -16,9 +16,7 @@
       <!-- Filtro de cubículos -->
       <div class="row">
         <div class="col-md-3 mb-3">
-          <label for="statusFilter" class="form-label"
-            >Filtrar por estado:</label
-          >
+          <label for="statusFilter" class="form-label">Filtrar por estado:</label>
           <select class="form-select" v-model="statusFilter">
             <option value="all">Todos</option>
             <option value="available">Disponible</option>
@@ -27,92 +25,38 @@
         </div>
       </div>
 
+      <!-- RENDER ALL CUBICLES -->
       <div class="row" style="max-height: 550px; overflow-y: auto">
-        <div
-          v-for="cubiculo in cubiculosFiltrados"
-          :key="cubiculo.id"
-          class="col-md-10 col-lg-4">
+        <div v-for="cubiculo in cubiculosFiltrados" :key="cubiculo.id" class="col-md-10 col-lg-4">
           <div class="card mb-4 shadow-sm">
             <article class="card-body">
-              <section
-                class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">{{ cubiculo.name }}</h5>
-                <Badge :status="cubiculo.status" />
+              <section class="d-flex flex-column justify-content-between align-items-start mb-2">
+                <h5 class="card-title">{{ cubiculo.nombre }}</h5>
+                <div class="d-flex flex-row justify-content-between align-items-center mb-2 gap-2">
+                  <BadgeStatus :status="cubiculo.status" />
+                  <BadgeCapacity :capacity="cubiculo.capacidad" />
+                </div>
+                <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
               </section>
-              <p class="card-text">{{ cubiculo.descripcion }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button
                     type="button"
-                    class="btn btn-sm btn-outline-success"
+                    class="btn btn-sm btn-outline-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#editarCubiculoModal"
                     data-bs-whatever="Editar cubículo"
-                    @click="editarCubiculo(cubiculo)">
+                    @click="abrirModalEdicion(cubiculo)">
                     <i class="bi bi-pencil-square"></i>
                     Editar
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-danger"
-                    @click="eliminarCubiculo(cubiculo)">
+                  <button type="button" class="btn btn-sm btn-outline-danger" @click="eliminarCubiculo(cubiculo)">
                     <i class="bi bi-trash-fill"></i>
                     Eliminar
                   </button>
                 </div>
               </div>
             </article>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fade"
-      id="editarCubiculoModal"
-      tabindex="-1"
-      aria-labelledby="editarCubiculoModal"
-      aria-hidden="true"
-      modal-dialog>
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editarCubiculoModal">
-              Editar Cubiculo
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div v-if="cubiculoToEdit">
-              <label for="name">Nombre</label>
-              <input
-                id="name"
-                class="form-control mt-1 mb-4"
-                v-model="cubiculoToEdit.name"
-                placeholder="Nombre del cubículo" />
-              <label for="descripcion">Descripción</label>
-              <input
-                id="descripcion"
-                class="form-control mt-1 mb-4"
-                v-model="cubiculoToEdit.descripcion"
-                placeholder="Descripción del cubículo" />
-              <button
-                class="btn btn-success mt-2"
-                @click="saveCubiculo"
-                data-bs-dismiss="modal">
-                Guardar cambios
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary ms-2 mt-2"
-                data-bs-dismiss="modal">
-                Cancelar
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -125,44 +69,74 @@
       tabindex="-1"
       aria-labelledby="crearCubiculoModal"
       aria-hidden="true"
-      modal-dialog>
+      ref="crearCubiculoModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="crearCubiculoModal">Crear Cubiculo</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <div>
-              <label for="name">Nombre</label>
-              <input
-                class="form-control"
-                v-model="name"
-                placeholder="Nombre del cubículo" />
+          <div class="modal-body text-black">
+            <div class="d-flex flex-column justify-content-center align-items-start">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" class="form-control" v-model="cub_nombre" placeholder="Nombre del cubículo" />
 
-              <label for="descripcion">Descripción</label>
+              <label for="descripcion" class="mt-4">Descripción</label>
+              <input id="descripcion" class="form-control" v-model="cub_descripcion" placeholder="Descripción del cubículo" />
+
+              <label for="capacidad" class="mt-4">Capacidad</label>
               <input
-                class="form-control mt-2"
-                v-model="descripcion"
-                placeholder="Descripción del cubículo" />
-              <button
-                class="btn btn-primary mt-2"
-                data-bs-dismiss="modal"
-                @click="agregarCubiculo"
-                :disabled="!name || !descripcion">
-                Agregar cubículo
+                id="capacidad"
+                type="number"
+                class="form-control"
+                v-model="cub_capacidad"
+                placeholder="Capacidad del cubículo" />
+
+              <div class="w-100 mt-2 d-flex justify-content-center gap-2">
+                <button
+                  class="btn btn-primary mt-2"
+                  data-bs-dismiss="modal"
+                  @click="crearCubiculo"
+                  :disabled="!cub_nombre || !cub_capacidad">
+                  Agregar cubículo
+                </button>
+                <button type="button" class="btn btn-secondary ms-2 mt-2" data-bs-dismiss="modal">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PARA EDITAR CUBICULO -->
+  <div class="modal fade" id="editarCubiculoModal" tabindex="-1" aria-labelledby="editarCubiculoModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editarCubiculoModal">Editar Cubiculo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex flex-column justify-content-center align-items-start">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" class="form-control" v-model="cub_nombre" placeholder="Nombre del cubículo" />
+
+            <label for="descripcion" class="mt-4">Descripción</label>
+            <input id="descripcion" class="form-control" v-model="cub_descripcion" placeholder="Descripción del cubículo" />
+
+            <label for="capacidad" class="mt-4">Capacidad</label>
+            <input
+              id="capacidad"
+              type="number"
+              class="form-control"
+              v-model="cub_capacidad"
+              placeholder="Capacidad del cubículo" />
+            <div class="w-100 mt-2 d-flex justify-content-center gap-2">
+              <button class="btn btn-primary mt-2" data-bs-dismiss="modal" @click="guardarCambiosCubiculo">
+                Guardar cambios
               </button>
-              <button
-                type="button"
-                class="btn btn-secondary ms-2 mt-2"
-                data-bs-dismiss="modal"
-                @click="clearInputs">
-                Cancelar
-              </button>
+              <button type="button" class="btn btn-secondary ms-2 mt-2" data-bs-dismiss="modal">Cancelar</button>
             </div>
           </div>
         </div>
@@ -172,164 +146,159 @@
 </template>
 
 <script>
-import Badge from "@/components/BadgeStatus.vue";
-import { reactive, toRefs, computed } from "vue";
+import BadgeStatus from "../../components/BadgeStatus.vue";
+import BadgeCapacity from "../../components/BadgeCapacity.vue";
 
 export default {
   components: {
-    Badge,
-  },
-  setup() {
-    const state = reactive({
-      name: "",
-      descripcion: "",
-      statusFilter: "all",
-      cubiculos: [
-        {
-          id: 1,
-          name: "Cubículo 1",
-          descripcion: "Cubículo de 4x4 metros",
-          status: false,
-          usuario: "Usuario 1",
-        },
-        {
-          id: 2,
-          name: "Cubículo 2",
-          descripcion: "Cubículo de 4x4 metros",
-          status: true,
-          usuario: "Usuario 2",
-        },
-        {
-          id: 3,
-          name: "Cubículo 3",
-          descripcion: "Cubículo de 4x4 metros",
-          status: false,
-          usuario: "Usuario 3",
-        },
-        {
-          id: 4,
-          name: "Cubículo 4",
-          descripcion: "Cubículo de 4x4 metros",
-          status: true,
-          usuario: "Usuario 4",
-        },
-        {
-          id: 5,
-          name: "Cubículo 5",
-          descripcion: "Cubículo de 4x4 metros",
-          status: false,
-          usuario: "Usuario 5",
-        },
-        {
-          id: 6,
-          name: "Cubículo 6",
-          descripcion: "Cubículo de 4x4 metros",
-          status: true,
-          usuario: "Usuario 6",
-        },
-        {
-          id: 7,
-          name: "Cubículo 7",
-          descripcion: "Cubículo de 4x4 metros",
-          status: false,
-          usuario: "Usuario 7",
-        },
-        {
-          id: 8,
-          name: "Cubículo 8",
-          descripcion: "Cubículo de 4x4 metros",
-          status: true,
-          usuario: "Usuario 8",
-        },
-        {
-          id: 9,
-          name: "Cubículo 9",
-          descripcion: "Cubículo de 4x4 metros",
-          status: false,
-          usuario: "Usuario 9",
-        },
-        {
-          id: 10,
-          name: "Cubículo 10",
-          descripcion: "Cubículo de 4x4 metros",
-          status: true,
-          usuario: "Usuario 10",
-        },
-      ],
-      cubiculoToEdit: null,
-      editDialogOpen: false,
-    });
-
-    const agregarCubiculo = () => {
-      if (!state.name || !state.descripcion) {
-        return;
-      }
-      const newCubiculo = {
-        id: state.cubiculos.length + 1,
-        name: state.name,
-        descripcion: state.descripcion,
-        status: true,
-        usuario: "Usuario 1",
-      };
-      state.cubiculos.push(newCubiculo);
-      state.name = "";
-      state.descripcion = "";
-    };
-
-    const editarCubiculo = (cubiculo) => {
-      state.cubiculoToEdit = { ...cubiculo };
-      state.editDialogOpen = true;
-    };
-
-    const saveCubiculo = () => {
-      const index = state.cubiculos.findIndex(
-        (c) => c.id === state.cubiculoToEdit.id
-      );
-      if (index !== -1) {
-        state.cubiculos[index] = state.cubiculoToEdit;
-        state.cubiculoToEdit = null;
-        state.editDialogOpen = false;
-      }
-    };
-
-    const cancelEdit = () => {
-      state.cubiculoToEdit = null;
-      state.editDialogOpen = false;
-    };
-
-    const eliminarCubiculo = (cubiculo) => {
-      state.cubiculos = state.cubiculos.filter((c) => c.id !== cubiculo.id);
-    };
-
-    const clearInputs = () => {
-      state.name = "";
-      state.descripcion = "";
-    };
-
-    const cubiculosFiltrados = computed(() => {
-      let cubiculosFiltrados = [];
-
-      if (state.statusFilter === "unavailable") {
-        cubiculosFiltrados = state.cubiculos.filter((c) => !c.status);
-      } else if (state.statusFilter === "available") {
-        cubiculosFiltrados = state.cubiculos.filter((c) => c.status);
-      } else {
-        cubiculosFiltrados = state.cubiculos;
-      }
-
-      return cubiculosFiltrados;
-    });
-
-    return {
-      ...toRefs(state),
-      cubiculosFiltrados,
-      agregarCubiculo,
-      editarCubiculo,
-      saveCubiculo,
-      eliminarCubiculo,
-      cancelEdit,
-      clearInputs,
-    };
+    BadgeStatus,
+    BadgeCapacity,
   },
 };
 </script>
+
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+
+const cubiculos = ref([]);
+const cub_nombre = ref("");
+const statusFilter = ref("all");
+const cub_capacidad = ref("");
+const cub_descripcion = ref("");
+const cubiculoId = ref("");
+
+const crearCubiculoModal = ref(null);
+
+const cargarCubiculos = () => {
+  const cubiculosCollection = collection(db, "cubiculos");
+  onSnapshot(cubiculosCollection, (snapshot) => {
+    cubiculos.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  });
+};
+
+const cubiculosFiltrados = computed(() => {
+  if (statusFilter.value === "all") {
+    return cubiculos.value;
+  } else if (statusFilter.value === "available") {
+    return cubiculos.value.filter((cubiculo) => cubiculo.status === true);
+  } else if (statusFilter.value === "unavailable") {
+    return cubiculos.value.filter((cubiculo) => cubiculo.status === false);
+  }
+  return cubiculos.value;
+});
+
+const abrirModalEdicion = (cubiculo) => {
+  cub_nombre.value = cubiculo.nombre;
+  cub_descripcion.value = cubiculo.descripcion;
+  cub_capacidad.value = cubiculo.capacidad;
+  cubiculoId.value = cubiculo.id;
+};
+
+const guardarCambiosCubiculo = async () => {
+  if (!cubiculoId.value) {
+    console.error("No se ha seleccionado un cubículo para editar");
+    return;
+  }
+
+  const cubiculoDoc = doc(db, "cubiculos", cubiculoId.value);
+  await updateDoc(cubiculoDoc, {
+    nombre: cub_nombre.value,
+    descripcion: cub_descripcion.value,
+    capacidad: cub_capacidad.value,
+  });
+};
+
+const crearCubiculo = async () => {
+  if (cub_nombre.value && cub_capacidad.value && cub_capacidad.value > 0 && cub_descripcion.value) {
+    try {
+      await addDoc(collection(db, "cubiculos"), {
+        nombre: cub_nombre.value,
+        capacidad: cub_capacidad.value,
+        descripcion: cub_descripcion.value,
+        fecha_inicio: null,
+        fecha_fin: null,
+        status: true,
+        user: null,
+      });
+      cub_nombre.value = "";
+      cub_descripcion.value = "";
+      cub_capacidad.value = "";
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  } else {
+    alert("Complete todos los campos para continuar");
+  }
+};
+
+const eliminarCubiculo = async (cubiculo) => {
+  if (confirm(`¿Estás seguro de eliminar el cubículo ${cubiculo.nombre}?`)) {
+    const cubiculoDoc = doc(db, "cubiculos", cubiculo.id);
+    await deleteDoc(cubiculoDoc);
+  }
+};
+
+onMounted(() => {
+  cargarCubiculos();
+
+  const modalElement = crearCubiculoModal.value;
+  if (modalElement) {
+    modalElement.addEventListener("shown.bs.modal", () => {
+      cub_nombre.value = "";
+      cub_descripcion.value = "";
+      cub_capacidad.value = "";
+    });
+  }
+});
+</script>
+
+<style scoped>
+.container {
+  padding: 20px;
+  background: #002f6c;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  margin: 20px auto;
+  color: #ffffff;
+}
+
+.btn-outline-primary {
+  color: #002f6c;
+  border-color: #002f6c;
+}
+
+.btn-outline-primary:hover {
+  color: #ffffff;
+  background-color: #002f6c;
+  border-color: #002f6c;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #002f6c;
+}
+
+.card-text {
+  color: #6c757d;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.modal-title {
+  color: #002f6c;
+}
+</style>
