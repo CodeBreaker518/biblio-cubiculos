@@ -54,7 +54,7 @@ const routes = [
         component: AchievementsView,
       },
       {
-        path: "finalizar-reservas",
+        path: "finalizarReservas",
         name: "FinalizarReservas",
         component: FinalizarReservas,
       },

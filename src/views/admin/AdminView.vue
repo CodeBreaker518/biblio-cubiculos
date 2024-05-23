@@ -64,7 +64,7 @@ const links = [
   { to: '/admin/avisos', text: 'Avisos', icon: 'bi bi-bookmark' },
   { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' },
   { to: '/admin/sanctions', text: 'Sanciones', icon: 'bi bi-exclamation-circle' },
-  { to: '/admin/FinalizarReservas', text: 'Finalizar Reservas', icon: 'bi bi-clock-history' }
+  { to: '/admin/finalizarReservas', text: 'Finalizar Reservas', icon: 'bi bi-clock-history' }
 ]
 </script>
 
