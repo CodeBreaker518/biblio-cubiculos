@@ -5,24 +5,19 @@
         <img src="@/assets/logo.png" class="img-fluid mb-4" alt="ug image" />
       </div>
       <form @submit.prevent="LogIn">
-        <!-- Campos del Login -->
         <div class="campos">
-          <!-- Correo electrónico -->
           <div class="campo">
             <label for="correo">Correo </label>
             <input type="email" v-model="email" placeholder="Correo Electrónico" class="formu">
           </div>
-          <!-- Contraseña -->
           <div class="campo">
             <label for="contraseña">Contraseña</label>
             <input type="password" v-model="pass" class="formu">
           </div>
         </div>
-        <!-- Botones del login -->
         <div class="container-btn">
           <input type="submit" value="Acceder" class="btn-aceptar">
         </div>
-        <!-- Opciones y términos del login -->
         <div class="opciones">
           <p>Al continuar, aceptas las <span>Condiciones de servicio</span>; y reconoces que leíste nuestra</p>
           <p><span>Política de privacidad.</span></p>
@@ -68,6 +63,10 @@ const LogIn = async () => {
           querySnapshot.forEach((doc) => {
             const userData = doc.data();
             const userRole = userData.u_rol;
+            const userName = userData.u_nombre;
+
+            // Store the user's name in localStorage
+            localStorage.setItem('username', userName);
 
             if (userRole === "administrador") {
               router.push('/admin');
