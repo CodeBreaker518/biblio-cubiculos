@@ -87,11 +87,11 @@ import { reactive, toRefs, computed } from "vue";
 export default {
   data() {
     return {
-      username: 'Usuario',
       showMenu: false,
       miCubiculo: null,
       sanciones: [],
-      logros: []
+      logros: [],
+      username: localStorage.getItem('username') || 'Usuario'
     };
   },
   setup() {
@@ -114,10 +114,6 @@ export default {
         { id: 14, name: "Cubículo 14", descripcion: "Cubículo de 4x4 metros", start_date: null, end_date: null, status: false, usuario: null },
         { id: 15, name: "Cubículo 15", descripcion: "Cubículo de 4x4 metros", start_date: null, end_date: null, status: false, usuario: null }
       ],
-      usuario: null,
-      fecha: null,
-      horaInicio: null,
-      horaFin: null,
       currentPage: 1,
       itemsPerPage: 3
     });
@@ -154,6 +150,7 @@ export default {
       this.showMenu = !this.showMenu;
     },
     logout() {
+      localStorage.removeItem('username'); // Remove the username on logout
       this.$router.push('/');
     }
   }
