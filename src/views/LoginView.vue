@@ -41,6 +41,7 @@
 
 <script setup>
 import { getAuth, signInWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
@@ -49,30 +50,45 @@ const pass = ref("");
 
 const router = useRouter();
 
-const LogIn = () => {
+const LogIn = async () => {
   const auth = getAuth();
+  const db = getFirestore();
 
   if (email.value !== "" && pass.value !== "") {
-    signInWithEmailAndPassword(auth, email.value, pass.value)
-      .then((data) => {
-        console.log(data.user);
-        console.log(" Sesion Iniciada ");
-        console.log(auth.currentUser);
-        if (auth.currentUser.emailVerified) {
-          router.push('/InterUsuario');
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email.value, pass.value);
+      const user = userCredential.user;
+      console.log(user);
+
+      if (user.emailVerified) {
+        const q = query(collection(db, "users"), where("u_correo", "==", email.value));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            const userData = doc.data();
+            const userRole = userData.u_rol;
+
+            if (userRole === "administrador") {
+              router.push('/admin');
+            } else if (userRole === "estudiante") {
+              router.push('/InterUsuario');
+            } else {
+              alert("Rol de usuario no reconocido");
+            }
+          });
         } else {
-          alert("El email no ha sido verificado, reenviamos un correo de verificación a su dirección de correo");
-          sendEmailVerification(auth.currentUser)
-            .then(() => {
-              console.log("enviao");
-              router.push("/");
-            });
+          alert("No se encontraron datos del usuario en la base de datos");
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.message);
-      });
+      } else {
+        alert("El email no ha sido verificado, reenviamos un correo de verificación a su dirección de correo");
+        await sendEmailVerification(user);
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
   } else {
     alert("Complete los campos para continuar : )");
   }
