@@ -50,7 +50,7 @@ const cubiculo  = ref("");
 const fecha = ref("");
 const horaInicio = ref("");
 const horaFin = ref("");
-const status = ref("open");
+//const status = ref("open");
 const cubiculos = [
           { id: 1, name: 'Cubículo 1' },
           { id: 2, name: 'Cubículo 2' },
@@ -81,7 +81,7 @@ const crearReserva = async () => {
         r_fecha : fecha.value,
         r_hora_inicio : horaFin.value,
         r_hora_fin : horaInicio.value,
-        r_status : status
+      //  r_status : status
 
         
       });

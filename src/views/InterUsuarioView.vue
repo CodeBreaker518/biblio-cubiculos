@@ -92,9 +92,12 @@ import { getAuth ,signOut,onAuthStateChanged  } from "firebase/auth";
 
 import { collection, query, where, getDocs} from "firebase/firestore";
 import { db } from "../firebaseConfig";
+
+
 const auth = getAuth();
-var usuario = "xi5daZ8ReUOd7Myh1EQtVmc3J6L2";
-onAuthStateChanged(auth, (user) => {
+var usuario;
+onAuthStateChanged(auth, async (user) => {
+  await console.log(user);
   if (user) {
 
     usuario= user.uid;

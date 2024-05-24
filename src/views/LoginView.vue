@@ -54,17 +54,17 @@ const LogIn = () => {
 
   if (email.value !== "" && pass.value !== "") {
     signInWithEmailAndPassword(auth, email.value, pass.value)
-      .then((data) => {
-        console.log(data.user);
-        console.log(" Sesion Iniciada ");
-        console.log(auth.currentUser);
+      .then(() => {
+      //  console.log(data.user);
+       // console.log(" Sesion Iniciada ");
+        //console.log(auth.currentUser);
         if (auth.currentUser.emailVerified) {
           router.push('/InterUsuario');
         } else {
           alert("El email no ha sido verificado, reenviamos un correo de verificación a su dirección de correo");
           sendEmailVerification(auth.currentUser)
             .then(() => {
-              console.log("enviao");
+             // console.log("enviao");
               router.push("/");
             });
         }
