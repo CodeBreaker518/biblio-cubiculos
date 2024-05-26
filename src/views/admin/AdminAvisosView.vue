@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid py-2">
-    <div class="row d-flex justify-content-center">
+    <div class="row w-100 d-flex justify-content-center">
       <main class="col-md-9 col-lg-10 px-md-4">
         <div class="pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Crear Aviso</h1>

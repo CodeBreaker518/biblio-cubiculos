@@ -18,10 +18,10 @@
                 v-for="link in links"
                 :key="link.to"
                 :to="link.to"
-                class="nav-item nav-link text-light list-group-item transition-colors rounded-3 d-flex align-items-center gap-2"
+                class="nav-item nav-link text-light list-group-item transition-colors rounded-3 d-flex justify-content-start align-items-center gap-2"
                 :class="{ active: $route.path === link.to }">
                 <i :class="link.icon"></i>
-                <p class="p-0 m-0">
+                <p class="p-0 m-0 d-flex justify-content-start" style="text-align: left">
                   {{ link.text }}
                 </p>
               </RouterLink>
@@ -31,7 +31,9 @@
 
         <main class="col-md-9 col-lg-10 px-md-4">
           <div class="pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">{{ $route.name }}</h1>
+            <h1 class="h2">
+              {{ links.find((link) => link.to === $route.path)?.text || "Inicio" }}
+            </h1>
           </div>
           <div class="container">
             <router-view />
@@ -58,7 +60,7 @@ const links = [
   { to: "/admin/avisos", text: "Avisos", icon: "bi bi-bookmark" },
   { to: "/admin/achievements", text: "Logros", icon: "bi bi-trophy" },
   { to: "/admin/sanctions", text: "Sanciones", icon: "bi bi-exclamation-circle" },
-  { to: "/admin/finalizarReservas", text: "Finalizar Reservas", icon: "bi bi-clock-history" },
+  { to: "/admin/finalizarReservas", text: "Finalizar Reserva", icon: "bi bi-clock-history" },
 ];
 </script>
 
@@ -76,7 +78,7 @@ const links = [
   max-width: 200px;
   height: calc(100vh - 56px);
   background-color: #e3f2fd;
-  padding: 2rem;
+  padding: 0.8rem;
   border-right: 1px solid #dee2e6;
   overflow-y: auto;
 }
@@ -87,6 +89,7 @@ const links = [
 }
 
 .nav-item {
+  font-size: 1rem;
   list-style-type: none;
   transition: 300ms all;
   background-color: #002147;
