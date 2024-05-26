@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="navbar navbar-dark d-flex" style="background-color: #002147;">
+    <header class="navbar navbar-dark d-flex" style="background-color: #002147">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Panel de Administrador</a>
         <div>
@@ -10,12 +10,8 @@
     </header>
 
     <div class="container-fluid">
-      <div class="row">
-        <nav
-          id="sidebar"
-          class="col-md-3 col-lg-2 d-md-block sidebar py-4"
-          style="background-color: #002147"
-        >
+      <div class="row w-100">
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar py-4" style="background-color: #002147">
           <div class="position-sticky">
             <ul class="nav d-flex flex-column gap-2 list-group">
               <RouterLink
@@ -23,8 +19,7 @@
                 :key="link.to"
                 :to="link.to"
                 class="nav-item nav-link text-light list-group-item transition-colors rounded-3 d-flex align-items-center gap-2"
-                :class="{ active: $route.path === link.to }"
-              >
+                :class="{ active: $route.path === link.to }">
                 <i :class="link.icon"></i>
                 <p class="p-0 m-0">
                   {{ link.text }}
@@ -48,40 +43,43 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from "vue-router";
 
 const router = useRouter();
 
 const logout = () => {
-  // Ensure session cleanup here
-  router.push('/');
-}
+  router.push("/");
+};
 
 const links = [
-  { to: '/admin', text: 'Inicio', icon: 'bi bi-house' },
-  { to: '/admin/cubiculos', text: 'Cubículos', icon: 'bi bi-box' },
-  { to: '/admin/reservas', text: 'Reservas', icon: 'bi bi-calendar' },
-  { to: '/admin/avisos', text: 'Avisos', icon: 'bi bi-bookmark' },
-  { to: '/admin/achievements', text: 'Logros', icon: 'bi bi-trophy' },
-  { to: '/admin/sanctions', text: 'Sanciones', icon: 'bi bi-exclamation-circle' },
-  { to: '/admin/finalizarReservas', text: 'Finalizar Reservas', icon: 'bi bi-clock-history' }
-]
+  { to: "/admin", text: "Inicio", icon: "bi bi-house" },
+  { to: "/admin/cubiculos", text: "Cubículos", icon: "bi bi-box" },
+  { to: "/admin/reservas", text: "Reservas", icon: "bi bi-calendar" },
+  { to: "/admin/avisos", text: "Avisos", icon: "bi bi-bookmark" },
+  { to: "/admin/achievements", text: "Logros", icon: "bi bi-trophy" },
+  { to: "/admin/sanctions", text: "Sanciones", icon: "bi bi-exclamation-circle" },
+  { to: "/admin/finalizarReservas", text: "Finalizar Reservas", icon: "bi bi-clock-history" },
+];
 </script>
 
 <style scoped>
 .active {
-  background-color: #c9a400; 
+  background-color: #c9a400;
 }
 
 /* Sidebar Styles */
+.container-fluid {
+  display: flex;
+}
+
 #sidebar {
   max-width: 200px;
+  height: calc(100vh - 56px);
   background-color: #e3f2fd;
   padding: 2rem;
   border-right: 1px solid #dee2e6;
-  height: 100vh;
+  overflow-y: auto;
 }
-
 .nav {
   list-style: none;
   padding: 0;
@@ -111,8 +109,8 @@ const links = [
 
 .nav-item.active {
   color: #ffffff !important;
-  border: 1px solid #c9a400; 
-  background-color: #c9a400; 
+  border: 1px solid #c9a400;
+  background-color: #c9a400;
 }
 
 .btn-aceptar {
@@ -132,17 +130,17 @@ const links = [
 }
 
 .navbar-dark .navbar-brand {
-  color: #c9a400; 
+  color: #c9a400;
 }
 
 .navbar-dark .btn-outline-light {
-  color: #c9a400; 
-  border-color: #c9a400; 
+  color: #c9a400;
+  border-color: #c9a400;
 }
 
 .navbar-dark .btn-outline-light:hover {
   color: #002147;
-  background-color: #c9a400; 
-  border-color: #c9a400; 
+  background-color: #c9a400;
+  border-color: #c9a400;
 }
 </style>
