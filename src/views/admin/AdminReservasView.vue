@@ -1,91 +1,140 @@
 <template>
-  <div class="container p-6">
-    <!-- RENDERIZAR TODOS LOS CUBICULOS CON INFORMACION EXTRA -->
-    <div class="row">
-      <h4>Elige un Cubiculo para reservarlo</h4>
-      <div class="col-md-10 col-lg-4 mt-4" v-for="cubiculo in filteredCubiculos" :key="cubiculo.id">
-        <div class="card mb-4 shadow-sm h-100">
-          <div class="card-body">
-            <section class="d-flex flex-column justify-content-between align-items-start mb-2">
-              <h5 class="card-title">{{ cubiculo.nombre }}</h5>
-              <div class="d-flex flex-row justify-content-between align-items-center mb-2 gap-2">
-                <BadgeStatus :status="cubiculo.status" />
-                <BadgeCapacity :capacity="cubiculo.capacidad" />
-              </div>
-              <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
-            </section>
+  <div class="d-flex flex-column gap-4 flex-xl-row">
+    <!-- Lado Izquierdo -->
+    <div class="col-md-12 col-xl-6">
+      <div class="container p-6">
+        <div class="row d-flex justify-content-center">
+          <!-- TITULO SECCION -->
+          <h4 class="mb-4">Elige un Cubiculo para reservarlo</h4>
+          <!-- CONTROLES PARA LOS FILTROS -->
+          <div class="row">
+            <div class="col-md-12 col-lg-6">
+              <label for="filterStatus" class="form-label d-flex justify-content-start">Filtrar por estado:</label>
+              <select id="filterStatus" class="form-select" v-model="filterStatus">
+                <option value="">Todos</option>
+                <option value="available">Disponible</option>
+                <option value="occupied">Ocupado</option>
+              </select>
+            </div>
+          </div>
+          <!-- RENDERIZAR TODOS LOS CUBICULOS CON INFORMACION EXTRA -->
+          <div class="d-flex justify-content-center flex-wrap gap-4 my-2 p-4" style="max-height: 500px; overflow-y: auto">
+            <div class="col-md-10 col-lg-5 mt-4" v-for="cubiculo in filteredCubiculos" :key="cubiculo.id">
+              <div class="card mb-4 shadow-sm h-100">
+                <div class="card-body">
+                  <section class="d-flex flex-column justify-content-between align-items-start mb-2">
+                    <h5 class="card-title">{{ cubiculo.nombre }}</h5>
+                    <div class="d-flex flex-column flex-row flex-2xl-row justify-content-start align-items-center mb-2 gap-2">
+                      <BadgeStatus :status="cubiculo.status" />
+                      <BadgeCapacity :capacity="cubiculo.capacidad" />
+                    </div>
+                    <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
+                  </section>
 
-            <div class="card mb-3">
-              <div class="card-body">
-                <p class="user-title" v-if="cubiculo.user">Usuario: {{ getUser(cubiculo.user) }}</p>
-                <p class="user-title" v-else>Usuario: Ninguno</p>
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <p class="user-title" v-if="cubiculo.user">Usuario: {{ getUser(cubiculo.user) }}</p>
+                      <p class="user-title" v-else>Usuario: Ninguno</p>
 
-                <p class="card-text" v-if="cubiculo.user">
-                  <strong>Fecha de inicio: <br /></strong> {{ cubiculo.fecha_inicio }}
-                </p>
-                <p class="card-text" v-if="cubiculo.user">
-                  <strong>Fecha de fin:<br /></strong> {{ cubiculo.fecha_fin }}
-                </p>
+                      <p class="card-text" v-if="cubiculo.user">
+                        <strong>Fecha de inicio: <br /></strong> {{ cubiculo.fecha_inicio }}
+                      </p>
+                      <p class="card-text" v-if="cubiculo.user">
+                        <strong>Fecha de fin:<br /></strong> {{ cubiculo.fecha_fin }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    :class="cubiculo.user ? 'btn-danger' : 'btn-outline-success'"
+                    data-bs-toggle="modal"
+                    data-bs-target="#createReservationModal"
+                    :disabled="cubiculo.user"
+                    @click="abrirModalReserva(cubiculo)">
+                    {{ cubiculo.user ? "Reservado" : "Reservar" }}
+                  </button>
+                </div>
               </div>
             </div>
-
-            <button
-              type="button"
-              class="btn btn-sm"
-              :class="cubiculo.user ? 'btn-danger' : 'btn-outline-success'"
-              data-bs-toggle="modal"
-              data-bs-target="#createReservationModal"
-              :disabled="cubiculo.user"
-              @click="abrirModalReserva(cubiculo)">
-              {{ cubiculo.user ? "Reservado" : "Reservar" }}
-            </button>
+          </div>
+          <!-- Modal para Reservar Cubículo -->
+          <div
+            class="modal fade"
+            id="createReservationModal"
+            tabindex="-1"
+            aria-labelledby="createReservationModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-md">
+              <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title text-white" id="createReservationModalLabel">Reservar Cubículo</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-black">
+                  <div class="mb-3">
+                    <label for="usuario" class="form-label">Usuario</label>
+                    <select class="form-select" v-model="usuario">
+                      <option disabled value="">Seleccionar usuario</option>
+                      <option v-for="user in usuarios" :key="user.id" :value="user.id">
+                        {{ `${user.u_nombre} ${user.u_apellido}` }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="fecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" v-model="fecha" />
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col">
+                      <label for="horaInicio" class="form-label">Hora de inicio</label>
+                      <input type="time" class="form-control" v-model="horaInicio" />
+                    </div>
+                    <div class="col">
+                      <label for="horaFin" class="form-label">Hora de finalización</label>
+                      <input type="time" class="form-control" v-model="horaFin" />
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="reservarCubiculo">
+                    Reservar
+                  </button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Modal para Reservar Cubículo -->
-      <div
-        class="modal fade"
-        id="createReservationModal"
-        tabindex="-1"
-        aria-labelledby="createReservationModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-md">
-          <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title text-white" id="createReservationModalLabel">Reservar Cubículo</h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-black">
-              <div class="mb-3">
-                <label for="usuario" class="form-label">Usuario</label>
-                <select class="form-select" v-model="usuario">
-                  <option disabled value="">Seleccionar usuario</option>
-                  <option v-for="user in usuarios" :key="user.id" :value="user.id">{{ `${user.u_nombre} ${user.u_apellido}` }}</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="fecha" class="form-label">Fecha</label>
-                <input type="date" class="form-control" v-model="fecha" />
-              </div>
-              <div class="row mb-3">
-                <div class="col">
-                  <label for="horaInicio" class="form-label">Hora de inicio</label>
-                  <input type="time" class="form-control" v-model="horaInicio" />
-                </div>
-                <div class="col">
-                  <label for="horaFin" class="form-label">Hora de finalización</label>
-                  <input type="time" class="form-control" v-model="horaFin" />
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="reservarCubiculo(cubiculoActual)">
-                Reservar
-              </button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            </div>
-          </div>
+    </div>
+    <!-- Lado Derecho -->
+    <div class="col-md-12 col-xl-6">
+      <div class="container p-6">
+        <!-- TITULO SECCION -->
+        <h4 class="mb-4">Registro Reservas</h4>
+        <div class="container p-4" style="background-color: #f8f9fa">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Cubículo</th>
+                <th>Fecha</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fin</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="reserva in reservas" :key="reserva.id">
+                <td>{{ getUser(reserva.r_usuario) }}</td>
+                <td>{{ getCubiculoName(reserva.r_cubiculo) }}</td>
+                <td>{{ reserva.r_fecha }}</td>
+                <td>{{ reserva.r_hora_inicio }}</td>
+                <td>{{ reserva.r_hora_fin }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -108,17 +157,28 @@ export default {
     const state = reactive({
       cubiculoActual: null,
       cubiculos: [],
+      reservas: [],
       usuario: null,
       fecha: null,
       horaInicio: null,
       horaFin: null,
       usuarios: [],
-      filterStartDate: null,
-      filterEndDate: null,
+      filterStatus: "",
     });
 
     const usuariosCollection = collection(db, "users"); // Cambia 'usuarios' por el nombre de tu colección de usuarios
     const cubiculosCollection = collection(db, "cubiculos");
+    const reservasCollection = collection(db, "reserva");
+
+    const getUser = (userId) => {
+      const user = state.usuarios.find((u) => u.id === userId);
+      return user ? `${user.u_nombre} ${user.u_apellido}` : "Desconocido";
+    };
+
+    const getCubiculoName = (cubiculoId) => {
+      const cubiculo = state.cubiculos.find((c) => c.id === cubiculoId);
+      return cubiculo ? cubiculo.nombre : "Desconocido";
+    };
 
     const cargarCubiculos = () => {
       onSnapshot(cubiculosCollection, (snapshot) => {
@@ -177,43 +237,35 @@ export default {
       }
     };
 
-    const filteredCubiculos = computed(() => {
-      return state.cubiculos.filter((cubiculo) => {
-        if (!cubiculo.start_date || !cubiculo.end_date) {
-          return true;
-        }
-        const cubiculoStartDate = new Date(cubiculo.start_date).getTime();
-        const cubiculoEndDate = new Date(cubiculo.end_date).getTime();
-        const filterStartDate = state.filterStartDate ? new Date(state.filterStartDate).getTime() : null;
-        const filterEndDate = state.filterEndDate ? new Date(state.filterEndDate).getTime() : null;
-
-        if (filterStartDate && filterEndDate) {
-          return cubiculoStartDate >= filterStartDate && cubiculoEndDate <= filterEndDate;
-        } else if (filterStartDate) {
-          return cubiculoStartDate >= filterStartDate;
-        } else if (filterEndDate) {
-          return cubiculoEndDate <= filterEndDate;
-        }
-        return true;
+    const cargarReservas = () => {
+      onSnapshot(reservasCollection, (snapshot) => {
+        state.reservas = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       });
+    };
+
+    const filteredCubiculos = computed(() => {
+      if (state.filterStatus === "available") {
+        return state.cubiculos.filter((cubiculo) => !cubiculo.user);
+      } else if (state.filterStatus === "occupied") {
+        return state.cubiculos.filter((cubiculo) => cubiculo.user);
+      } else {
+        return state.cubiculos;
+      }
     });
 
     onMounted(() => {
       cargarCubiculos();
       cargarUsuarios();
+      cargarReservas();
     });
-
-    const getUser = (userId) => {
-      const user = state.usuarios.find((u) => u.id === userId);
-      return user ? `${user.u_nombre} ${user.u_apellido}` : "Desconocido";
-    };
 
     return {
       ...toRefs(state),
+      getCubiculoName,
+      getUser,
       abrirModalReserva,
       reservarCubiculo,
       filteredCubiculos,
-      getUser,
     };
   },
 };
@@ -221,7 +273,7 @@ export default {
 
 <style scoped>
 .cubicles {
-  max-height: 200px;
+  max-height: 100px;
   overflow-y: auto;
 }
 
