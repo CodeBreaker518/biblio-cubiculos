@@ -24,7 +24,7 @@
                 <div class="card-body">
                   <section class="d-flex flex-column justify-content-between align-items-start mb-2">
                     <h5 class="card-title">{{ cubiculo.nombre }}</h5>
-                    <div class="d-flex flex-column flex-row flex-2xl-row justify-content-start align-items-center mb-2 gap-2">
+                    <div class="d-flex flex-column flex-row flex-2xl-row center align-items-start mb-2 gap-2">
                       <BadgeStatus :status="cubiculo.status" />
                       <BadgeCapacity :capacity="cubiculo.capacidad" />
                     </div>

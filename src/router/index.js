@@ -55,7 +55,7 @@ const routes = [
       },
       {
         path: "finalizarReservas",
-        name: "FinalizarReservas",
+        name: "Finalizar Reservas",
         component: FinalizarReservas,
       },
       {
