@@ -16,8 +16,8 @@
       <!-- Filtro de cubículos -->
       <div class="row">
         <div class="col-md-3 mb-3">
-          <label for="statusFilter" class="form-label">Filtrar por estado:</label>
-          <select class="form-select" v-model="statusFilter">
+          <label for="filterStatus" class="form-label d-flex justify-content-start">Filtrar por estado:</label>
+          <select id="filterStatus" class="form-select" v-model="filterStatus">
             <option value="all">Todos</option>
             <option value="available">Disponible</option>
             <option value="unavailable">Ocupado</option>
@@ -164,7 +164,7 @@ import { db } from "../../firebaseConfig";
 
 const cubiculos = ref([]);
 const cub_nombre = ref("");
-const statusFilter = ref("all");
+const filterStatus = ref("all");
 const cub_capacidad = ref("");
 const cub_descripcion = ref("");
 const cubiculoId = ref("");
@@ -179,11 +179,11 @@ const cargarCubiculos = () => {
 };
 
 const cubiculosFiltrados = computed(() => {
-  if (statusFilter.value === "all") {
+  if (filterStatus.value === "all") {
     return cubiculos.value;
-  } else if (statusFilter.value === "available") {
+  } else if (filterStatus.value === "available") {
     return cubiculos.value.filter((cubiculo) => cubiculo.status === true);
-  } else if (statusFilter.value === "unavailable") {
+  } else if (filterStatus.value === "unavailable") {
     return cubiculos.value.filter((cubiculo) => cubiculo.status === false);
   }
   return cubiculos.value;

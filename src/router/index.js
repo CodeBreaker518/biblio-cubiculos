@@ -12,7 +12,7 @@ import AdminCubiculosView from "../views/admin/AdminCubiculosView.vue";
 import AdminReservasView from "../views/admin/AdminReservasView.vue";
 import AdminAvisosView from "../views/admin/AdminAvisosView.vue";
 import AchievementsView from "../views/admin/AchievementsView.vue";
-import SanctionsView from "../views/admin/SanctionsView.vue"; 
+import SanctionsView from "../views/admin/SanctionsView.vue";
 import ChangePasswordView from "../views/ChangePasswordView.vue";
 import ReservarCubiculosUserView from "../views/ReservarCubiculosUserView.vue";
 import FinalizarReservas from "../views/admin/FinalizarReservasView.vue";
@@ -37,6 +37,31 @@ const routes = [
         path: "cubiculos",
         name: "Cubiculos",
         component: AdminCubiculosView,
+      },
+      {
+        path: "reservas",
+        name: "Reservas",
+        component: AdminReservasView,
+      },
+      {
+        path: "avisos",
+        name: "Avisos",
+        component: AdminAvisosView,
+      },
+      {
+        path: "achievements",
+        name: "Logros",
+        component: AchievementsView,
+      },
+      {
+        path: "finalizarReservas",
+        name: "FinalizarReservas",
+        component: FinalizarReservas,
+      },
+      {
+        path: "sanctions",
+        name: "Sanciones",
+        component: SanctionsView,
       },
     ],
   },
@@ -83,7 +108,7 @@ const routes = [
   {
     path: "/ReservarUser",
     name: "ReservarUser",
-    component: ReservarCubiculosUserView
+    component: ReservarCubiculosUserView,
   },
 ];
 
