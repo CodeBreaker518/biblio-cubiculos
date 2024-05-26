@@ -1,9 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
+import LoginView from "../views/LoginView.vue";
+import InterUsuarioView from "../views/InterUsuarioView.vue";
+import AjustesView from "../views/AjustesView.vue";
+import RecuperacionPasswordView from "../views/RecuperacionPasswordView.vue";
+import PerfilView from "../views/PerfilView.vue";
+import ReservarCubiculosView from "../views/ReservarCubiculosView.vue";
 import AdminView from "../views/admin/AdminView.vue";
 import CubiculosView from "../views/admin/CubiculosView.vue";
-import AchievementsView from "../views/admin/AchievementsView.vue";
+// import VistaInicio from '../views/HomeView.vue'
 
 const routes = [
   {
@@ -17,21 +23,12 @@ const routes = [
     component: AdminView,
     children: [
       {
-        path: "",
-        name: "admin",
-        component: CubiculosView,
-      },
-      {
         path: "cubiculos",
         name: "Cubiculos",
-        component: CubiculosView,
-      },
-      {
-        path: "achievements",
-        name: "Logros",
-        component: AchievementsView,
+        component: AdminCubiculosView,
       },
     ],
+    component: AdminView,
   },
   {
     path: "/Register",
@@ -40,19 +37,19 @@ const routes = [
   },
   {
     path: "/login",
-    name: "login",
-    component: () => import("../views/LoginView.vue"),
+    name: "Login",
+    component: LoginView,
   },
   {
     path: "/InterUsuario",
     name: "InterUsuario",
-    component: () => import("../views/InterUsuarioView.vue"),
+    component: InterUsuarioView,
   },
   {
     path: "/Ajustes",
     name: "Ajustes",
     component: () => import("../views/AjustesView.vue"),
-  },
+  },  
 ];
 
 const router = createRouter({
