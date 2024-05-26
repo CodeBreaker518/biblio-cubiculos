@@ -73,20 +73,19 @@ const links = [
   background-color: #c9a400; 
 }
 
+/* Sidebar Styles */
 #sidebar {
   max-width: 200px;
-  height: calc(100vh - 72px);
+  background-color: #e3f2fd;
+  padding: 2rem;
+  border-right: 1px solid #dee2e6;
+  height: 100vh;
 }
 
-@media (max-width: 768px) {
-  #sidebar {
-    max-width: 100%;
-    height: 100%;
-  }
-}
-
-.nav-items-list {
-  height: 100%;
+.nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .nav-item {
@@ -100,8 +99,14 @@ const links = [
 }
 
 .nav-item:hover {
-  background-color: #c9a400; 
-  color: #ffffff !important;
+  background-color: #c9a400;
+  color: white !important;
+}
+
+.nav-item.active {
+  color: white !important;
+  border: 1px solid #c9a400;
+  background-color: #c9a400;
 }
 
 .nav-item.active {

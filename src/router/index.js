@@ -38,31 +38,6 @@ const routes = [
         name: "Cubiculos",
         component: AdminCubiculosView,
       },
-      {
-        path: "reservas",
-        name: "Reservas",
-        component: AdminReservasView,
-      },
-      {
-        path: "avisos",
-        name: "Avisos",
-        component: AdminAvisosView,
-      },
-      {
-        path: "achievements",
-        name: "Logros",
-        component: AchievementsView,
-      },
-      {
-        path: "finalizarReservas",
-        name: "FinalizarReservas",
-        component: FinalizarReservas,
-      },
-      {
-        path: "sanctions",
-        name: "Sanciones",
-        component: SanctionsView, 
-      },
     ],
   },
   {
