@@ -61,7 +61,7 @@
                 <label for="usuario" class="form-label">Usuario</label>
                 <select class="form-select" v-model="usuario">
                   <option disabled value="">Seleccionar usuario</option>
-                  <option v-for="user in usuarios" :key="user.id" :value="user.id">{{ user.u_nombre }}</option>
+                  <option v-for="user in usuarios" :key="user.id" :value="user.id">{{ `${user.u_nombre} ${user.u_apellido}` }}</option>
                 </select>
               </div>
               <div class="mb-3">
@@ -205,7 +205,7 @@ export default {
 
     const getUser = (userId) => {
       const user = state.usuarios.find((u) => u.id === userId);
-      return user ? user.u_nombre : "Desconocido";
+      return user ? `${user.u_nombre} ${user.u_apellido}` : "Desconocido";
     };
 
     return {
