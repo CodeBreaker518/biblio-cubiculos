@@ -14,16 +14,16 @@
       </div>
   
       <div class="row">
-        <div v-for="sanction in filteredSanctions" :key="sanction.id" class="col-md-10 col-lg-4">
+        <div v-for="sancion in sanciones" :key="sancion.id" class="col-md-10 col-lg-4">
           <div class="card mb-4 shadow-sm">
             <article class="card-body">
               <section class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">{{ sanction.name }}</h5>
-                <span :class="['badge', sanction.active ? 'bg-danger' : 'bg-secondary']">
+                <h5 class="card-title">{{ sancion.s_nombre }}</h5>
+                <!-- <span :class="['badge', sanction.active ? 'bg-danger' : 'bg-secondary']">
                   {{ sanction.active ? 'Activa' : 'Inactiva' }}
-                </span>
+                </span> -->
               </section>
-              <p class="card-text">{{ sanction.description }}</p>
+              <p class="card-text">{{ sancion.s_descripcion }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button
@@ -140,9 +140,19 @@
   </template>
   
   <script setup>
-  import { reactive, ref, computed } from 'vue'
+  import { reactive, ref } from 'vue'
   import * as bootstrap from 'bootstrap'
+  import { getFirestore, collection,onSnapshot,addDoc } from 'firebase/firestore';
   
+  const db = getFirestore();
+  const sanciones = ref ([]);
+
+  const logrosCollection =collection (db,"sancion");
+  onSnapshot(logrosCollection, (snapshot) => {
+    sanciones.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    console.log (sanciones.value)
+  });
+
   // Datos simulados para estudiantes y sanciones
   const students = [
     { id: 1, name: 'Juan Pérez' },
@@ -160,19 +170,34 @@
   const selectedStudent = ref(null)
   const editSanctionForm = reactive({ id: null, name: '', description: '', active: false })
   
-  const filteredSanctions = computed(() =>
-    sanctions.filter((sanction) =>
-      sanction.name.toLowerCase().includes('')
-    )
-  )
+  // const filteredSanctions = computed(() =>
+  //   sanctions.filter((sanction) =>
+  //     sanction.name.toLowerCase().includes('')
+  //   )
+  // )
   
-  function createSanction() {
-    sanctions.push({
-      id: sanctions.length + 1,
-      name: newSanction.name,
-      description: newSanction.description,
-      active: true
-    })
+  async function createSanction() {
+    if ( newSanction.name && newSanction.description)
+  {
+      await addDoc(collection (db,"sancion"), 
+      {
+        s_nombre : newSanction.name,
+        s_descripcion : newSanction.description
+
+        
+      });
+
+    }
+    
+    
+    
+    // sanctions.push({
+    //   id: sanctions.length + 1,
+    //   name: newSanction.name,
+    //   description: newSanction.description,
+    //   active: true
+    // })
+
     newSanction.name = ''
     newSanction.description = ''
     hideModal('createSanctionModal')

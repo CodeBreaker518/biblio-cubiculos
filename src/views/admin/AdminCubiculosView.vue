@@ -31,12 +31,12 @@
           <div class="card mb-4 shadow-sm">
             <article class="card-body">
               <section class="d-flex flex-column justify-content-between align-items-start mb-2">
-                <h5 class="card-title">{{ cubiculo.nombre }}</h5>
+                <h5 class="card-title">{{ cubiculo.cub_nombre }}</h5>
                 <div class="d-flex flex-row justify-content-between align-items-center mb-2 gap-2">
-                  <BadgeStatus :status="cubiculo.status" />
-                  <BadgeCapacity :capacity="cubiculo.capacidad" />
+                  <BadgeStatus :status="cubiculo.cub_status" />
+                  <BadgeCapacity :capacity="cubiculo.cub_capacidad" />
                 </div>
-                <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
+                <p class="card-text mb-2">{{ cubiculo.cub_descripcion }}</p>
               </section>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -172,9 +172,10 @@ const cubiculoId = ref("");
 const crearCubiculoModal = ref(null);
 
 const cargarCubiculos = () => {
-  const cubiculosCollection = collection(db, "cubiculos");
+  const cubiculosCollection = collection(db, "cubiculo");
   onSnapshot(cubiculosCollection, (snapshot) => {
     cubiculos.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    console.log (cubiculos.value)
   });
 };
 
@@ -182,9 +183,9 @@ const cubiculosFiltrados = computed(() => {
   if (filterStatus.value === "all") {
     return cubiculos.value;
   } else if (filterStatus.value === "available") {
-    return cubiculos.value.filter((cubiculo) => cubiculo.status === true);
+    return cubiculos.value.filter((cubiculo) => cubiculo.cub_status === true);
   } else if (filterStatus.value === "unavailable") {
-    return cubiculos.value.filter((cubiculo) => cubiculo.status === false);
+    return cubiculos.value.filter((cubiculo) => cubiculo.cub_status === false);
   }
   return cubiculos.value;
 });
@@ -202,25 +203,25 @@ const guardarCambiosCubiculo = async () => {
     return;
   }
 
-  const cubiculoDoc = doc(db, "cubiculos", cubiculoId.value);
+  const cubiculoDoc = doc(db, "cubiculo", cubiculoId.value);
   await updateDoc(cubiculoDoc, {
-    nombre: cub_nombre.value,
-    descripcion: cub_descripcion.value,
-    capacidad: cub_capacidad.value,
+    cub_nombre: cub_nombre.value,
+    cub_descripcion: cub_descripcion.value,
+    cub_capacidad: cub_capacidad.value,
   });
 };
 
 const crearCubiculo = async () => {
   if (cub_nombre.value && cub_capacidad.value && cub_capacidad.value > 0 && cub_descripcion.value) {
     try {
-      await addDoc(collection(db, "cubiculos"), {
-        nombre: cub_nombre.value,
-        capacidad: cub_capacidad.value,
-        descripcion: cub_descripcion.value,
-        fecha_inicio: null,
-        fecha_fin: null,
-        status: true,
-        user: null,
+      await addDoc(collection(db, "cubiculo"), {
+        cub_nombre: cub_nombre.value,
+        cub_capacidad: cub_capacidad.value,
+        cub_descripcion: cub_descripcion.value,
+        // fecha_inicio: null,
+        // fecha_fin: null,
+        cub_status: true,
+        // user: null,
       });
       cub_nombre.value = "";
       cub_descripcion.value = "";
@@ -236,7 +237,7 @@ const crearCubiculo = async () => {
 
 const eliminarCubiculo = async (cubiculo) => {
   if (confirm(`¿Estás seguro de eliminar el cubículo ${cubiculo.nombre}?`)) {
-    const cubiculoDoc = doc(db, "cubiculos", cubiculo.id);
+    const cubiculoDoc = doc(db, "cubiculo", cubiculo.id);
     await deleteDoc(cubiculoDoc);
   }
 };

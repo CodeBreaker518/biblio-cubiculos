@@ -66,7 +66,7 @@ const LogIn = async () => {
             const userName = userData.u_nombre;
 
             // Store the user's name in localStorage
-            localStorage.setItem('username', userName);
+            localStorage.setItem('username', userName + " "+userData.u_apellido);
 
             if (userRole === "administrador") {
               router.push('/admin');

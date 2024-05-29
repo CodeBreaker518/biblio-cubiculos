@@ -14,16 +14,16 @@
     </div>
 
     <div class="row">
-      <div v-for="achievement in filteredAchievements" :key="achievement.id" class="col-md-10 col-lg-4">
+      <div v-for="logro in logros" :key="logro.id" class="col-md-10 col-lg-4">
         <div class="card mb-4 shadow-sm">
           <article class="card-body">
             <section class="d-flex justify-content-between align-items-center">
-              <h5 class="card-title">{{ achievement.name }}</h5>
-              <span :class="['badge', achievement.completed ? 'bg-success' : 'bg-warning']">
+              <h5 class="card-title">{{ logro.l_nombre }}</h5>
+              <!-- <span :class="['badge', logro.completed ? 'bg-success' : 'bg-warning']">
                 {{ achievement.completed ? 'Completado' : 'Pendiente' }}
-              </span>
+              </span> -->
             </section>
-            <p class="card-text">{{ achievement.description }}</p>
+            <p class="card-text">{{ logro.l_descripcion }}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button
@@ -140,8 +140,23 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed } from 'vue';
+import { reactive, ref } from 'vue';
+import { getFirestore, collection,onSnapshot,addDoc } from 'firebase/firestore';
 import * as bootstrap from 'bootstrap';
+
+const db = getFirestore();
+const logros = ref ([]);
+
+  const logrosCollection =collection (db,"logro");
+  onSnapshot(logrosCollection, (snapshot) => {
+    logros.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    console.log (logros.value)
+  });
+
+
+
+
+
 
 // Datos simulados para estudiantes y logros
 const students = [
@@ -160,19 +175,34 @@ const newAchievement = reactive({ name: '', description: '' });
 const selectedStudent = ref(null);
 const editAchievementForm = reactive({ id: null, name: '', description: '', completed: false });
 
-const filteredAchievements = computed(() =>
-  achievements.filter((achievement) =>
-    achievement.name.toLowerCase().includes('')
-  )
-);
+// const filteredAchievements = computed(() =>
+//   achievements.filter((achievement) =>
+//     achievement.name.toLowerCase().includes('')
+//   )
+// );
 
-function createAchievement() {
-  achievements.push({
-    id: achievements.length + 1,
-    name: newAchievement.name,
-    description: newAchievement.description,
-    completed: false
-  });
+async function createAchievement() {
+  if ( newAchievement.name && newAchievement.description)
+  {
+      await addDoc(collection (db,"logro"), 
+      {
+        l_nombre : newAchievement.name,
+        l_descripcion : newAchievement.description
+
+        
+      });
+
+    }
+
+
+  // achievements.push({
+  //   id: achievements.length + 1,
+  //   name: newAchievement.name,
+  //   description: newAchievement.description,
+  //   completed: false
+  // });
+
+
   newAchievement.name = '';
   newAchievement.description = '';
   hideModal('createAchievementModal');

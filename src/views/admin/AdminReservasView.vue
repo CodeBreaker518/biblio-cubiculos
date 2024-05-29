@@ -5,7 +5,7 @@
       <div class="container p-6">
         <div class="row d-flex justify-content-center">
           <!-- TITULO SECCION -->
-          <h4 class="mb-4">Elige un Cubiculo para reservarlo</h4>
+          <h4 class="mb-4">Reservas</h4>
           <!-- CONTROLES PARA LOS FILTROS -->
           <div class="row">
             <div class="col-md-12 col-lg-6">
@@ -19,33 +19,34 @@
           </div>
           <!-- RENDERIZAR TODOS LOS CUBICULOS CON INFORMACION EXTRA -->
           <div class="d-flex justify-content-center flex-wrap gap-4 my-2 p-4" style="max-height: 500px; overflow-y: auto">
-            <div class="col-md-10 col-lg-5 mt-4" v-for="cubiculo in filteredCubiculos" :key="cubiculo.id">
+            <div class="col-md-10 col-lg-5 mt-4" v-for="reserva in reservasActivas" :key="reserva.id">
               <div class="card mb-4 shadow-sm h-100">
                 <div class="card-body">
                   <section class="d-flex flex-column justify-content-between align-items-start mb-2">
-                    <h5 class="card-title">{{ cubiculo.nombre }}</h5>
+                    <h5 class="card-title">{{ reserva.r_username }}</h5>
                     <div class="d-flex flex-column flex-row flex-2xl-row center align-items-start mb-2 gap-2">
-                      <BadgeStatus :status="cubiculo.status" />
-                      <BadgeCapacity :capacity="cubiculo.capacidad" />
+                      <!-- <BadgeStatus :status="s" /> -->
+                      <BadgeReserva :capacity="reserva.r_status" />
+                      
                     </div>
-                    <p class="card-text mb-2">{{ cubiculo.descripcion }}</p>
+                    <!-- <p class="card-text mb-2">{{ reserva.r_cubiculo }}</p> -->
                   </section>
 
                   <div class="card mb-3">
                     <div class="card-body">
-                      <p class="user-title" v-if="cubiculo.user">Usuario: {{ getUser(cubiculo.user) }}</p>
-                      <p class="user-title" v-else>Usuario: Ninguno</p>
+                      <p class="user-title" >Fecha de la Reserva: {{ reserva.r_fecha }}</p>
+                      <!-- <p class="user-title" v-else>Usuario: Ninguno</p> -->
 
-                      <p class="card-text" v-if="cubiculo.user">
-                        <strong>Fecha de inicio: <br /></strong> {{ cubiculo.fecha_inicio }}
+                      <p class="card-text" >
+                        <strong>Hora de Inicio: <br /></strong> {{ reserva.r_hora_inicio}}
                       </p>
-                      <p class="card-text" v-if="cubiculo.user">
-                        <strong>Fecha de fin:<br /></strong> {{ cubiculo.fecha_fin }}
+                      <p class="card-text">
+                        <strong>Hora de Fin:<br /></strong> {{ reserva.r_hora_fin }}
                       </p>
                     </div>
                   </div>
 
-                  <button
+                  <!-- <button
                     type="button"
                     class="btn btn-sm"
                     :class="cubiculo.user ? 'btn-danger' : 'btn-outline-success'"
@@ -53,7 +54,19 @@
                     data-bs-target="#createReservationModal"
                     :disabled="cubiculo.user"
                     @click="abrirModalReserva(cubiculo)">
-                    {{ cubiculo.user ? "Reservado" : "Reservar" }}
+                      
+                  </button> -->
+                  <button 
+                    type="button"
+                    class="btn-outline-primary"
+                    >
+                  Check-In
+                  </button>
+                  <button 
+                    type="button"
+                    class="btn-secondary"
+                    >
+                  Check-Out
                   </button>
                 </div>
               </div>
@@ -142,22 +155,45 @@
 </template>
 
 <script>
-import BadgeStatus from "../../components/BadgeStatus.vue";
-import BadgeCapacity from "../../components/BadgeCapacity.vue";
+// import BadgeStatus from "../../components/BadgeStatus.vue";
+//import BadgeCapacity from "../../components/BadgeCapacity.vue";
+import BadgeReserva from  "../../components/BadgeReservaStatus.vue"
 import { reactive, onMounted, computed, toRefs } from "vue";
-import { collection, addDoc, onSnapshot, doc, updateDoc } from "firebase/firestore";
+//
+
+import { collection, addDoc, onSnapshot, doc, updateDoc, query,getDocs,where  } from "firebase/firestore";
 import { db } from "../../firebaseConfig"; // Asegúrate de que la ruta sea correcta
+//var reservas = ref ([])
+
+
+
+
+
+
+      // querySnapshot.forEach( (doc) =>
+      // {
+      //     reservas = doc.map( (doc) => ({ id: doc.id, ...doc.data() }) );
+      //     // reservas.push(doc.data());
+      // });
+
+
+//console.log(reservasrender);
+    
+ 
+
 
 export default {
   components: {
-    BadgeStatus,
-    BadgeCapacity,
+    // BadgeStatus,
+   // BadgeCapacity,
+    BadgeReserva
   },
   setup() {
     const state = reactive({
       cubiculoActual: null,
       cubiculos: [],
       reservas: [],
+      reservasActivas :[],
       usuario: null,
       fecha: null,
       horaInicio: null,
@@ -169,6 +205,7 @@ export default {
     const usuariosCollection = collection(db, "users"); // Cambia 'usuarios' por el nombre de tu colección de usuarios
     const cubiculosCollection = collection(db, "cubiculos");
     const reservasCollection = collection(db, "reserva");
+    const reservasActivas  = query(reservasCollection,where ("r_status" , "==","open"));
 
     const getUser = (userId) => {
       const user = state.usuarios.find((u) => u.id === userId);
@@ -183,8 +220,31 @@ export default {
     const cargarCubiculos = () => {
       onSnapshot(cubiculosCollection, (snapshot) => {
         state.cubiculos = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+       
       });
     };
+
+    const cargarReservasAct = async() => 
+    {
+
+      // db.collection("reserva")
+      // .where ("r_status" , "==","open")
+      // .get()
+      // .then((snapshot) => {
+      //   state.reservasActivas = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      // // do something with documents
+      // })
+
+
+
+      const querySnapshot  = await getDocs(reservasActivas);
+      state.reservasActivas = await querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      await console.log(state.reservasActivas)
+    }
+
+   
+  
+
 
     const cargarUsuarios = () => {
       onSnapshot(usuariosCollection, (snapshot) => {
@@ -240,6 +300,7 @@ export default {
     const cargarReservas = () => {
       onSnapshot(reservasCollection, (snapshot) => {
         state.reservas = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        console.log(state.reservas);
       });
     };
 
@@ -257,6 +318,7 @@ export default {
       cargarCubiculos();
       cargarUsuarios();
       cargarReservas();
+      cargarReservasAct();
     });
 
     return {
@@ -264,6 +326,7 @@ export default {
       getCubiculoName,
       getUser,
       abrirModalReserva,
+      
       reservarCubiculo,
       filteredCubiculos,
     };
