@@ -179,7 +179,7 @@ import { db } from "../../firebaseConfig"; // Asegúrate de que la ruta sea corr
 
 //console.log(reservasrender);
     
-
+ 
 
 
 export default {
@@ -220,7 +220,7 @@ export default {
     const cargarCubiculos = () => {
       onSnapshot(cubiculosCollection, (snapshot) => {
         state.cubiculos = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        console.log(state.cubiculos);
+       
       });
     };
 
